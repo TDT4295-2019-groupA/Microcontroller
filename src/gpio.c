@@ -6,7 +6,7 @@
 #include "bsp.h"
 #include "bsp_trace.h"
 
-void setupGPIO()
+void setupGPIO(void)
 {
 	CMU_ClockEnable(cmuClock_GPIO, true);
 	for(unsigned int i=0; i<12; i++) {

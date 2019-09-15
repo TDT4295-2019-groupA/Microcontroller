@@ -1,5 +1,7 @@
+#include <stdbool.h>
 #include "declarations.h"
 #include "efm32gg.h"
+#include "em_timer.h"
 #include "bsp.h"
 #include "bsp_trace.h"
 
@@ -10,6 +12,10 @@ void __attribute__ ((interrupt)) GPIO_EVEN_IRQHandler()
     uint32_t DIN = *GPIO_IF;
     *GPIO_IFC = DIN;
     *GPIO_PA_DOUT = 0x0000;
+    if(timerStarted == false){
+    	timerStarted = true;
+    	TIMER_Enable(TIMER1, true);
+    }
     handleButtons(~DIN);
 }
 
@@ -18,12 +24,18 @@ void __attribute__ ((interrupt)) GPIO_ODD_IRQHandler()
     uint32_t DIN = *GPIO_IF;
     *GPIO_IFC = DIN;
     *GPIO_PA_DOUT = 0x0000;
+    if(timerStarted == false){
+    	timerStarted = true;
+    	TIMER_Enable(TIMER1, true);
+    }
     handleButtons(~DIN);
 }
 
 void __attribute__ ((interrupt)) TIMER1_IRQHandler()
 {
     *TIMER1_IFC = 1;
+    TIMER_Enable(TIMER1, false);
+    timerStarted = false;
     if(testy == 0) {
 
     }else if(testy == 1) {
@@ -40,7 +52,7 @@ void __attribute__ ((interrupt)) TIMER1_IRQHandler()
     testy = 0;
 }
 
-void setupNVIC()
+void setupNVIC(void)
 {
 	*ISER0 |= 0x1<<12; // TIMER1
 	*ISER0 |= 0x1<<11; // GPIO_ODD

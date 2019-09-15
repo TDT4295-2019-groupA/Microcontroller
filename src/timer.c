@@ -5,7 +5,7 @@
 
 TIMER_Init_TypeDef timerInit =
   {
-    .enable     = true,
+    .enable     = false,
     .debugRun   = true,
     .prescale   = timerPrescale1024,
     .clkSel     = timerClkSelHFPerClk,
