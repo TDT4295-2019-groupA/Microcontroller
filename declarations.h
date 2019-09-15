@@ -4,7 +4,7 @@
 void setupGPIO();
 void setupNVIC();
 void setupCMU();
-void setupTimer(uint32_t delay);
+void setupTimer(uint16_t delay);
 void handleButtons(uint32_t DIN);
 void transferComplete(unsigned int channel, bool primary, void *user);
 void setupSpi(void);

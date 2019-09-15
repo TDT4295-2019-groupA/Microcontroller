@@ -139,7 +139,7 @@
 
 // System Control Block
 
-#define SCR_yuh          ((volatile uint32_t*)0xe000ed10)
+#define SCR_yuh      ((volatile uint32_t*)0xe000ed10)
 #define SYSTICK_CTRL ((volatile uint32_t*)0xe000e010)
 #define SYSTICK_LOAD ((volatile uint32_t*)0xe000e014)
 

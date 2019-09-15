@@ -9,7 +9,7 @@ int main(void)
 {
 	setupCMU();
 	setupGPIO();
-	setupTimer(2734);
+	setupTimer(2000);
 	setupNVIC();
 	while (1) {
 		GPIO_PinOutToggle(gpioPortC, 3);
