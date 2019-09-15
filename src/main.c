@@ -5,6 +5,7 @@
 //integer for testing purposes
 testy;
 
+//timer interrupt every 2 seconds
 int main(void)
 {
 	setupCMU();
@@ -26,3 +27,4 @@ void setupCMU()
 	CMU_ClockEnable(cmuClock_DMA, true);
 	CMU_ClockEnable(cmuClock_USART1, true);
 }
+
