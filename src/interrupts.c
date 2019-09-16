@@ -18,7 +18,6 @@ void __attribute__ ((interrupt)) GPIO_EVEN_IRQHandler()
     	TIMER_Enable(TIMER1, true);
     }
     handleButtons(~DIN);
-    EMU_EnterEM1();
 }
 
 void __attribute__ ((interrupt)) GPIO_ODD_IRQHandler()
@@ -31,7 +30,6 @@ void __attribute__ ((interrupt)) GPIO_ODD_IRQHandler()
     	TIMER_Enable(TIMER1, true);
     }
     handleButtons(~DIN);
-    EMU_EnterEM1();
 }
 
 void __attribute__ ((interrupt)) TIMER1_IRQHandler()
@@ -53,7 +51,6 @@ void __attribute__ ((interrupt)) TIMER1_IRQHandler()
     	BSP_LedToggle(1);
     }
     testy = 0;
-    EMU_EnterEM1();
 }
 
 void setupNVIC(void)
