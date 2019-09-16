@@ -3,6 +3,7 @@
 #include "em_gpio.h"
 #include "em_cmu.h"
 #include "em_timer.h"
+#include "em_emu.h"
 
 //integer for testing purposes
 int testy;
@@ -15,6 +16,7 @@ int main(void)
 	setupGPIO();
 	setupTimer(2000);
 	setupNVIC();
+	EMU_EnterEM1();
 	while (1) {
 		for(volatile long i=0; i<100000; i++);
 		GPIO_PinOutToggle(gpioPortC, 3);
