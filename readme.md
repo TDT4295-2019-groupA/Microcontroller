@@ -14,6 +14,6 @@ Tasks:
     - FPGA
     - GPIO
 
-[MIDI Status Kode Oversikt](bilder/MIDI-1)
+[MIDI Status Kode Oversikt](bilder/MIDI-1.png)
 
-[Eksempel MIDI](bilder/MIDI-2)
+[Eksempel MIDI](bilder/MIDI-2.png)
