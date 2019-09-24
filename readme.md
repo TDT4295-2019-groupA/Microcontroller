@@ -13,3 +13,7 @@ Tasks:
   Output:
     - FPGA
     - GPIO
+
+[MIDI Status Kode Oversikt](bilder/MIDI-1)
+
+[Eksempel MIDI](bilder/MIDI-2)
