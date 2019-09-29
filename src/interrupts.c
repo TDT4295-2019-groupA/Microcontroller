@@ -12,29 +12,32 @@ void __attribute__ ((interrupt)) GPIO_EVEN_IRQHandler()
 {
     uint32_t DIN = *GPIO_IF;
     *GPIO_IFC = DIN;
-    *GPIO_PA_DOUT = 0x0000;
+    /*
     if(timerStarted == false){
     	timerStarted = true;
     	TIMER_Enable(TIMER1, true);
     }
-    handleButtons(~DIN);
+    */
+    handleButtons();
 }
 
 void __attribute__ ((interrupt)) GPIO_ODD_IRQHandler()
 {
     uint32_t DIN = *GPIO_IF;
     *GPIO_IFC = DIN;
-    *GPIO_PA_DOUT = 0x0000;
+    /*
     if(timerStarted == false){
     	timerStarted = true;
     	TIMER_Enable(TIMER1, true);
     }
-    handleButtons(~DIN);
+    */
+    handleButtons();
 }
 
 void __attribute__ ((interrupt)) TIMER1_IRQHandler()
 {
-    *TIMER1_IFC = 1;
+    /*
+	*TIMER1_IFC = 1;
     TIMER_Enable(TIMER1, false);
     timerStarted = false;
     if(testy == 0) {
@@ -51,6 +54,7 @@ void __attribute__ ((interrupt)) TIMER1_IRQHandler()
     	BSP_LedToggle(1);
     }
     testy = 0;
+    */
 }
 
 void setupNVIC(void)

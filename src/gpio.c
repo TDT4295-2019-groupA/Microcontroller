@@ -8,75 +8,74 @@
 
 void setupGPIO(void)
 {
-	CMU_ClockEnable(cmuClock_GPIO, true);
-	for(unsigned int i=0; i<12; i++) {
+	for(unsigned int i=4; i<16; i++) {
 		GPIO_PinModeSet(gpioPortC, i, gpioModeInputPullFilter, 1);
 		GPIO_ExtIntConfig(gpioPortC, i, i, true, false, true);
 	}
 }
 
-void handleButtons(uint32_t DIN)
+void led()
 {
-	DIN = ~DIN;
-	bool sw1  = (DIN & (0x1<<0));
-	bool sw2  = (DIN & (0x1<<1));
-	bool sw3  = (DIN & (0x1<<2));
-	bool sw4  = (DIN & (0x1<<3));
-	bool sw5  = (DIN & (0x1<<4));
-	bool sw6  = (DIN & (0x1<<5));
-	bool sw7  = (DIN & (0x1<<6));
-	bool sw8  = (DIN & (0x1<<7));
-	bool sw9  = (DIN & (0x1<<8));
-	bool sw10 = (DIN & (0x1<<9));
-	bool sw11 = (DIN & (0x1<<10));
-	bool sw12 = (DIN & (0x1<<11));
+	BSP_LedToggle(0);
+}
 
-	if (sw1) {
-		//led();
-		testy += 1;
+void handleButtons()
+{
+	bool bt1  = GPIO_PinInGet(gpioPortC, 4);
+	bool bt2  = GPIO_PinInGet(gpioPortC, 5);
+	bool bt3  = GPIO_PinInGet(gpioPortC, 6);
+	bool bt4  = GPIO_PinInGet(gpioPortC, 7);
+	bool bt5  = GPIO_PinInGet(gpioPortC, 8);
+	bool bt6  = GPIO_PinInGet(gpioPortC, 9);
+	bool bt7  = GPIO_PinInGet(gpioPortC, 10);
+	bool bt8  = GPIO_PinInGet(gpioPortC, 11);
+	bool bt9  = GPIO_PinInGet(gpioPortC, 12);
+	bool bt10 = GPIO_PinInGet(gpioPortC, 13);
+	bool bt11 = GPIO_PinInGet(gpioPortC, 14);
+	bool bt12 = GPIO_PinInGet(gpioPortC, 15);
+
+	if (bt1) {
+		led();
 	}
-	if (sw2) {
-		//led();
-		testy += 1;
+	if (bt2) {
+		led();
 	}
-	if (sw3) {
-		//led();
-		testy += 1;
+	if (bt3) {
+		led();
 	}
-	if (sw4) {
-		//led();
-		testy += 1;
+	if (bt4) {
+		led();
 	}
-	if (sw5) {
-		//led();
-		testy += 1;
+	if (bt5) {
+		led();
+
 	}
-	if (sw6) {
-		//led();
-		testy += 1;
+	if (bt6) {
+		led();
+
 	}
-	if (sw7) {
-		//led();
-		testy += 1;
+	if (bt7) {
+		led();
+
 	}
-	if (sw8) {
-		//led();
-		testy += 1;
+	if (bt8) {
+		led();
+
 	}
-	if (sw9) {
-		//led();
-		testy += 1;
+	if (bt9) {
+		led();
+
 	}
-	if (sw10) {
-		//led();
-		testy += 1;
+	if (bt10) {
+		led();
+
 	}
-	if (sw11) {
-		//led();
-		testy += 1;
+	if (bt11) {
+		led();
+
 	}
-	if (sw12) {
-		//led();
-		testy += 1;
+	if (bt12) {
+		led();
+
 	}
 }
