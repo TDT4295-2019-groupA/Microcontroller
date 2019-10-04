@@ -15,7 +15,9 @@
  *
  ******************************************************************************/
 #include <stdbool.h>
-#include "declarations.h"
+#include "../headers/gpio.h"
+#include "../headers/timer.h"
+#include "../headers/interrupts.h"
 #include "em_timer.h"
 #include "em_emu.h"
 #include "em_device.h"
@@ -48,6 +50,9 @@
 
 static void StateChange(USBD_State_TypeDef oldState,
                         USBD_State_TypeDef newState);
+
+
+void setupCMU(void);
 
 /*** Variables ***/
 
@@ -92,7 +97,7 @@ int main(void)
   GPIO_PinModeSet(ACTIVITY_LED_PORT, ACTIVITY_LED_PIN, gpioModePushPull, 0);
   CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
   SegmentLCD_Init(false);
-  SegmentLCD_Write("usb kbd");
+  SegmentLCD_Write("usb bbb");
   SegmentLCD_Symbol(LCD_SYMBOL_GECKO, true);
 
   /* Initialize HID keyboard driver. */

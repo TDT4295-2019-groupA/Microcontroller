@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "em_cmu.h"
 #include "em_timer.h"
+#include "../headers/timer.h"
 
 TIMER_Init_TypeDef timerInit =
   {

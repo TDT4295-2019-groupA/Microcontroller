@@ -1,4 +1,4 @@
-#include "fpga.h"
+#include "../headers/fpga.h"
 // #include "spi_master.h" I need this
 
 uint find_unused_generator_id(const MicrocontrollerGeneratorState* generator_states)
