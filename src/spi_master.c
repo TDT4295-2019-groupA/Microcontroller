@@ -5,6 +5,7 @@
 #include "em_emu.h"
 #include "em_int.h"
 #include "dmactrl.h"
+#include "../headers/spi_master.h"
 
 #define DMA_CHANNEL_TX   0
 #define DMA_CHANNEL_RX   1

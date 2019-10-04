@@ -1,6 +1,7 @@
 #include <stdbool.h>
-#include "declarations.h"
-#include "efm32gg.h"
+#include "../headers/interrupts.h"
+#include "../headers/gpio.h"
+#include "../headers/efm32gg.h"
 #include "em_timer.h"
 #include "bsp.h"
 #include "bsp_trace.h"

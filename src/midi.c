@@ -1,4 +1,4 @@
-#include "midi.h"
+#include "../headers/midi.h"
 
 MIDI_packet_info get_MIDI_packet_info(const byte* data)
 {
