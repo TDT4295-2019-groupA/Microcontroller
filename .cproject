@@ -35,13 +35,13 @@
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.debug.builtin.291775596" name="Always branch to builtin functions (-fno-builtin)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.debug.builtin" value="true" valueType="boolean"/>
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.optimization.level.1987652322" name="Optimization Level" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.optimization.level" value="gnu.c.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1495255915" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/middleware/usb_gecko/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/hardware/kit/EFM32GG_STK3700/config&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/CMSIS/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/emlib/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/hardware/kit/common/bsp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/hardware/kit/common/drivers&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/Device/SiliconLabs/EFM32GG/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/microcontroller/includes/usb_gecko}&quot;"/>
 								</option>
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.def.symbols.1258045329" name="Defined symbols (-D)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DEBUG_EFM_USER=1"/>
@@ -56,13 +56,13 @@
 							</tool>
 							<tool id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.assembler.base.713296328" name="GNU ARM Assembler" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.assembler.base">
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.assembler.includes.863577941" name="Include paths (-I)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.assembler.includes" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/middleware/usb_gecko/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/hardware/kit/EFM32GG_STK3700/config&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/CMSIS/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/emlib/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/hardware/kit/common/bsp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/hardware/kit/common/drivers&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/Device/SiliconLabs/EFM32GG/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/microcontroller/includes/usb_gecko}&quot;"/>
 								</option>
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.as.def.symbols.1169643750" name="Defined symbols (-D)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.as.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="EFM32GG990F1024=1"/>
@@ -131,6 +131,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/microcontroller/headers}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\Bin\SimplicityStudio\v4_workspace\microcontroller\headers&quot;"/>
 									<listOptionValue builtIn="false" value="../$(StudioSdkPath)/app/mcu_example/EFM32FF_STK3700/usbhidkbd"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/microcontroller/includes/usb_gecko}&quot;"/>
 								</option>
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.def.symbols.1552533101" name="Defined symbols (-D)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DEBUG_EFM_USER=1"/>
@@ -156,6 +157,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/microcontroller/headers}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\Bin\SimplicityStudio\v4_workspace\microcontroller\headers&quot;"/>
 									<listOptionValue builtIn="false" value="../$(StudioSdkPath)/app/mcu_example/EFM32FF_STK3700/usbhidkbd"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/microcontroller/includes/usb_gecko}&quot;"/>
 								</option>
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.as.def.symbols.1498485906" name="Defined symbols (-D)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.as.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="EFM32GG990F1024=1"/>
@@ -182,24 +184,24 @@
 	</storageModule>
 	<storageModule moduleId="com.silabs.ss.framework.ide.project.core.cpp" projectCommon.boardIds="brd2200a:0.0.0.A03" projectCommon.buildArtifactType="EXE" projectCommon.importModeId="COPY" projectCommon.partId="mcu.arm.efm32.gg.efm32gg990f1024" projectCommon.sdkId="com.silabs.sdk.stack.super:2.6.2._1914562655"/>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="microcontroller.com.silabs.ss.framework.ide.project.core.cdt.cdtMbsProjectType.1805668712" name="SLS CDT Project" projectType="com.silabs.ss.framework.ide.project.core.cdt.cdtMbsProjectType"/>
+		<project id="emptyCProject.com.silabs.ss.framework.ide.project.core.cdt.cdtMbsProjectType.1509292412" name="SLS CDT Project" projectType="com.silabs.ss.framework.ide.project.core.cdt.cdtMbsProjectType"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="refreshScope"/>
 	<storageModule moduleId="refreshScope"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.release#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904;com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.release#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904.;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.base.4189560;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.input.315977946">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.debug#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904;com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.debug#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904.;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.base.702149038;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.input.570253852">
+		<scannerConfigBuildInfo instanceId="com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.release#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904;com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.release#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904.;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.base.1339427310;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.input.676277264">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.debug#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904;com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.debug#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904.;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.base.9568850;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.input.820564127">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.release#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904;com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.release#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904.;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.base.1635242859;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.input.1808432807">
+		<scannerConfigBuildInfo instanceId="com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.debug#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904;com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.debug#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904.;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.base.1933224483;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.input.1204192257">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope"/>
 </cproject>
