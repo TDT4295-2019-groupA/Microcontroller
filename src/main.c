@@ -39,6 +39,7 @@ int main(void)
 
 void setupCMU(void)
 {
+	CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
 	CMU_ClockEnable(cmuClock_GPIO, true);
 	CMU_ClockEnable(cmuClock_TIMER1, true);
 	CMU_ClockEnable(cmuClock_DMA, true);
