@@ -11,5 +11,6 @@ extern USBH_Device_TypeDef device;
 extern USBH_Ep_TypeDef ep[1];
 
 int connect(void);
+void messageloop(void);
 
 #endif /* HEADERS_USBHOST_H_ */

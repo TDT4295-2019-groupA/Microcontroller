@@ -26,3 +26,16 @@ int connect(void)
 	}
 	return connectionResult;
 }
+
+void messageloop(void)
+{
+	int connectionresult;
+	unsigned char readbuffer[16] = {0};
+	while (USBH_DeviceConnected()) {
+		connectionresult = USBH_ReadB(device.ep, readbuffer, 4, 0);
+	}
+	SegmentLCD_NumberOff();
+	SegmentLCD_Write("Device");
+	USBTIMER_DelayMs(500);
+	SegmentLCD_Write("Removed");
+}
