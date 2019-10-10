@@ -1,18 +1,9 @@
+#include "../headers/usbhost.h"
 
-
-#include <stdio.h>
-#include "em_device.h"
-#include "em_cmu.h"
-#include "em_usb.h"
-#include "segmentlcd.h"
-
-
-STATIC_UBUF(tmpBuf, 1024);
-static USBH_Device_TypeDef device;
-static USBH_Ep_TypeDef ep[1];
 
 int connect(void)
 {
+	STATIC_UBUF(tmpBuf, 1024);
 	USBH_Init_TypeDef is = USBH_INIT_DEFAULT;
 	int connectionResult;
 	USBH_Init(&is);
