@@ -1,14 +1,16 @@
 #include "../headers/usbhost.h"
 
 
-int connect(void)
+USBH_Device_TypeDef connect(void)
 {
 	STATIC_UBUF(tmpBuf, 1024);
+	USBH_Device_TypeDef device;
+	USBH_Ep_TypeDef ep[1];
 	USBH_Init_TypeDef is = USBH_INIT_DEFAULT;
-	int connectionResult;
+	int connectionResult = 1;
 	USBH_Init(&is);
-
-	while (connectionResult != 1) {
+	SegmentLCD_Write("hei");
+	while (connectionResult != USB_STATUS_OK) {
 		connectionResult = USBH_WaitForDeviceConnectionB(tmpBuf, 10);
 		if ( connectionResult == USB_STATUS_OK ) {
 	    	SegmentLCD_Write("Device");
@@ -24,15 +26,19 @@ int connect(void)
 	    	}
 		}
 	}
-	return connectionResult;
+	SegmentLCD_Write("meg");
+	return device;
 }
 
-void messageloop(void)
+void messageloop(USBH_Device_TypeDef device)
 {
 	int connectionresult;
 	unsigned char readbuffer[16] = {0};
 	while (USBH_DeviceConnected()) {
 		connectionresult = USBH_ReadB(device.ep, readbuffer, 4, 0);
+		if (readbuffer[0] != 0) {
+			SegmentLCD_Write("ayy");
+		}
 	}
 	SegmentLCD_NumberOff();
 	SegmentLCD_Write("Device");

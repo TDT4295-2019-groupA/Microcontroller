@@ -7,10 +7,8 @@
 #include "em_usb.h"
 #include "segmentlcd.h"
 
-extern USBH_Device_TypeDef device;
-extern USBH_Ep_TypeDef ep[1];
 
-int connect(void);
-void messageloop(void);
+USBH_Device_TypeDef connect(void);
+void messageloop(USBH_Device_TypeDef);
 
 #endif /* HEADERS_USBHOST_H_ */

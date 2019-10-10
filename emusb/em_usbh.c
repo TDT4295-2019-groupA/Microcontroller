@@ -1007,12 +1007,12 @@ int USBH_InitDeviceData(USBH_Device_TypeDef *device,
     memcpy(&device->confDesc,
            &((USBH_Device_TypeDef*)buf)->confDesc, USB_CONFIG_DESCSIZE);
     memcpy(&device->itfDesc,
-           USBH_QGetInterfaceDescriptor(buf, 0, 0), USB_INTERFACE_DESCSIZE);
+           USBH_QGetInterfaceDescriptor(buf, 0, 1), USB_INTERFACE_DESCSIZE);
 
     if ( ep ) {
       for ( i = 0; i < numEp; i++ ) {
         memcpy(&device->ep[i].epDesc,
-               USBH_QGetEndpointDescriptor(buf, 0, 0, i),
+               USBH_QGetEndpointDescriptor(buf, 0, 1, i),
                USB_ENDPOINT_DESCSIZE);
       }
     }
