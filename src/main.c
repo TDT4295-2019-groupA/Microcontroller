@@ -47,7 +47,7 @@ int main(void)
 	STATIC_UBUF(tmpBuf, 1024);
 	USBH_Device_TypeDef device;
 	*/
-	unsigned char lcdbuffer[4] = {0};
+	unsigned char readbuffer[4] = {0};
 	  USB_EndpointDescriptor_TypeDef *retval;
 	  USB_EndpointDescriptor_TypeDef checker;
 	  USBH_Ep_TypeDef ep[1];
@@ -61,7 +61,6 @@ int main(void)
 
 	  SegmentLCD_Init(false);
 	  SegmentLCD_Write("USBHOST");
-	  SegmentLCD_Symbol(LCD_SYMBOL_GECKO, true);
 
 
 	  USBH_Init(&is);               /* Initialize USB HOST stack */
@@ -86,15 +85,15 @@ int main(void)
 	    	checker = *retval;
 	      } else {
 	      }
-	      char converted[17];
+	      char converted[9];
 	      int i;
 	      while ( USBH_DeviceConnected() ) {
-	    	  testytestyoki = USBH_ReadB(device.ep, lcdbuffer, 4, 0);
+	    	  testytestyoki = USBH_ReadB(device.ep, readbuffer, 4, 0);
 	    	  SegmentLCD_Write("yay");
-	    	  for(i=0;i<8;i++) {
-	    		  sprintf(&converted[i*2], "%02X", lcdbuffer[i]);
+	    	  for(i=0;i<4;i++) {
+	    		  sprintf(&converted[i*2], "%02X", readbuffer[i]);
 	    	  }
-	    	  if (lcdbuffer[0] == nullertull) {
+	    	  if (readbuffer[0] == nullertull) {
 	    		  SegmentLCD_Write("123");
 	    		  USBTIMER_DelayMs(2000);
 	    	  }
