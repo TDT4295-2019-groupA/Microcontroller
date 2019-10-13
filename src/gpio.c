@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
-#include "../headers/gpio.h"
+#include "gpio.h"
 #include "em_gpio.h"
 #include "em_cmu.h"
 #include "bsp.h"

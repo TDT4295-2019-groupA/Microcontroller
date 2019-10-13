@@ -42,6 +42,7 @@
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/hardware/kit/common/drivers&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/Device/SiliconLabs/EFM32GG/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/microcontroller/includes/usb_gecko}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/microcontroller/includes/efm32_headers}&quot;"/>
 								</option>
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.def.symbols.1258045329" name="Defined symbols (-D)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DEBUG_EFM_USER=1"/>
@@ -132,6 +133,8 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Users\Bin\SimplicityStudio\v4_workspace\microcontroller\headers&quot;"/>
 									<listOptionValue builtIn="false" value="../$(StudioSdkPath)/app/mcu_example/EFM32FF_STK3700/usbhidkbd"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/microcontroller/includes/usb_gecko}&quot;"/>
+									<listOptionValue builtIn="false" value="/microcontroller/includes/efm32_headers"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/microcontroller/includes/efm32_headers}&quot;"/>
 								</option>
 								<option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.def.symbols.1552533101" name="Defined symbols (-D)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DEBUG_EFM_USER=1"/>
@@ -188,7 +191,14 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="GNU ARM v7.2.1 - Release">
+			<resource resourceType="PROJECT" workspacePath="/microcontroller"/>
+		</configuration>
+		<configuration configurationName="GNU ARM v7.2.1 - Debug">
+			<resource resourceType="PROJECT" workspacePath="/microcontroller"/>
+		</configuration>
+	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.release#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904;com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.release#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904.;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.base.4189560;com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.input.315977946">
