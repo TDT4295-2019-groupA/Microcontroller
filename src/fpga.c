@@ -1,6 +1,7 @@
 #include "fpga.h"
 #include <stdio.h>
 #include "segmentlcd.h"
+//#include "spi_master.h"
 
 uint find_unused_generator_id(const MicrocontrollerGeneratorState* generator_states)
 {
