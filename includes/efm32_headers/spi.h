@@ -15,12 +15,9 @@ void TransferComplete( SPIDRV_Handle_t handle,
                        Ecode_t transferStatus,
                        int itemsTransferred );
 
-Ecode_t spi_initialize(void);
-
-// sends a test packet
-void spi_test(uint8_t data_size);
+void spi_init(void);
 
 // if you just want to forget about it, provide TransferComplete as callback.
-void spi_transmit_callback(uint8_t* data, SPIDRV_Callback_t transfer_callback);
+void spi_transmit(uint8_t* data, uint16_t data_size);
 
 #endif /* INCLUDES_EFM32_HEADERS_SPI_H_ */

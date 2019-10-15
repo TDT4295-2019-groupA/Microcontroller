@@ -58,14 +58,14 @@ MIDI_packet waitForInput(){
 	return midi_out;
 }
 
-void handleMultipleButtonPresses(){
+void handleMultipleButtonPresses(MicrocontrollerGeneratorState** generator_states){
 	for(int i = 0; i < GPIO_BTN_COUNT; i++){
 		if(last_button_state[i] != isButtonDown(i)){
 			last_button_state[i] = isButtonDown(i);
 			if(isButtonDown(i))
-				handleMIDIEvent(keydown_to_midi + i);
+				handleMIDIEvent(&keydown_to_midi[i], generator_states);
 			else
-				handleMIDIEvent(keyup_to_midi + i);
+				handleMIDIEvent(&keyup_to_midi[i], generator_states);
 		}
 	}
 }

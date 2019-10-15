@@ -8,7 +8,7 @@ SPIDRV_Handle_t handle = &handleData;
   {                                                                    \
     USART1,                     /* USART port                       */ \
     _USART_ROUTE_LOCATION_LOC1, /* USART pins location number       */ \
-    4800,                    /* Bitrate                          */ \
+    115200,                    /* Bitrate                          */ \
     8,                          /* Frame length                     */ \
     0,                          /* Dummy Tx value for Rx only funcs */ \
     spidrvMaster,               /* SPI mode                         */ \
@@ -24,7 +24,7 @@ void TransferComplete( SPIDRV_Handle_t handle,
 {
   if ( transferStatus == ECODE_EMDRV_SPIDRV_OK )
   {
-	  SegmentLCD_Write("SPI :)"); // yay success
+	  SegmentLCD_Write("SPI"); // yay success
   }
 }
 
@@ -35,7 +35,7 @@ void spi_init(void) {
 	SPIDRV_Init( handle, &initData );
 }
 
-void spi_transfer(uint8_t* buffer, uint16_t buffer_size)
+void spi_transmit(uint8_t* buffer, uint16_t buffer_size)
 {
   // Transmit data using a callback to catch transfer completion.
   SPIDRV_MTransmit( handle, buffer, buffer_size, TransferComplete );
