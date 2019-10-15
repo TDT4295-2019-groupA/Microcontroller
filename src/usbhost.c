@@ -1,15 +1,19 @@
 #include "usbhost.h"
 
+STATIC_UBUF(tmpBuf, 1024);
+static USBH_Device_TypeDef device;
+static USBH_Ep_TypeDef ep[1];
+static USB_EndpointDescriptor_TypeDef *retval;
+static USB_EndpointDescriptor_TypeDef checker;
 
-USBH_Device_TypeDef connect(void)
+static unsigned char readbuffer[4 * USB_OUTPUT_SIZE] = {0};
+
+bool USBConnect()
 {
-	STATIC_UBUF(tmpBuf, 1024);
-	USBH_Device_TypeDef device;
-	USBH_Ep_TypeDef ep[1];
 	USBH_Init_TypeDef is = USBH_INIT_DEFAULT;
 	int connectionResult = 1;
 	USBH_Init(&is);
-	SegmentLCD_Write("hei");
+	SegmentLCD_Write("USB IN");
 	while (connectionResult != USB_STATUS_OK) {
 		connectionResult = USBH_WaitForDeviceConnectionB(tmpBuf, 10);
 		if ( connectionResult == USB_STATUS_OK ) {
@@ -21,27 +25,29 @@ USBH_Device_TypeDef connect(void)
 	    	if (USBH_QueryDeviceB(tmpBuf, sizeof(tmpBuf), USBH_GetPortSpeed())
 	          == USB_STATUS_OK) {
 	    		USBH_InitDeviceData(&device, tmpBuf, ep, 1, USBH_GetPortSpeed());
-	    		USBH_AssignHostChannel(ep, 2);
+	    		int testy = USBH_AssignHostChannel(ep, 2);
+	    		retval = USBH_QGetEndpointDescriptor(tmpBuf, 0, 1, 0); 	// This can be removed?
+	    		checker = *retval;										// And this?
 	    	} else {
 	    	}
 		}
 	}
 	SegmentLCD_Write("meg");
-	return device;
+	return true;
 }
 
-void messageloop(USBH_Device_TypeDef device)
-{
-	int connectionresult;
-	unsigned char readbuffer[16] = {0};
-	while (USBH_DeviceConnected()) {
-		connectionresult = USBH_ReadB(device.ep, readbuffer, 4, 0);
-		if (readbuffer[0] != 0) {
-			SegmentLCD_Write("ayy");
-		}
+bool USBIsConnected(){
+	return USBH_DeviceConnected();
+}
+
+USB_output USBWaitForData(){
+	readbuffer[0] = 0;
+	while(readbuffer[0] == 0){ // Nullertull
+		USBH_ReadB(device.ep, readbuffer, USB_OUTPUT_SIZE, 0);
 	}
-	SegmentLCD_NumberOff();
-	SegmentLCD_Write("Device");
-	USBTIMER_DelayMs(500);
-	SegmentLCD_Write("Removed");
+	USB_output out;
+	for(int i = 0; i < USB_OUTPUT_SIZE; i++){
+		out.data[i] = readbuffer[i];
+	}
+	return out;
 }

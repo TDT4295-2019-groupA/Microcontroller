@@ -7,8 +7,13 @@
 #include "em_usb.h"
 #include "segmentlcd.h"
 
+#define USB_OUTPUT_SIZE 4
+typedef struct USB_output{
+	unsigned char data[USB_OUTPUT_SIZE];
+} USB_output;
 
-USBH_Device_TypeDef connect(void);
-void messageloop(USBH_Device_TypeDef);
+bool USBConnect(void);
+bool USBIsConnected();
+USB_output USBWaitForData();
 
 #endif /* HEADERS_USBHOST_H_ */
