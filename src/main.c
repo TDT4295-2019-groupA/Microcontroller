@@ -3,6 +3,7 @@
 #include "em_cmu.h"
 #include "segmentlcd.h"
 #include "input.h"
+#include "usbhost.h"
 #include "gpio.h"
 #include "fpga.h"
 #include "interrupts.h"
@@ -22,10 +23,10 @@ int main(void)
 	SegmentLCD_Init(false);
 	SegmentLCD_Write("USBHOST");
 
-	if(connectToInput()){
+	if(USBConnect()){
 		SegmentLCD_Write("CONNECT");
 
-		while(inputConnected()){
+		while(USBIsConnected()){
 			MIDI_packet input = waitForInput();
 			// TODO: do stuff with input
 			handleMIDIEvent(&input);

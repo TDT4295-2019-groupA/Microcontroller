@@ -49,32 +49,7 @@ static MIDI_packet keyup_to_midi[16] = {
 		{{0x80, 0x3f, 0x00}}
 };
 
-
-bool connectToInput(){
-	return USBConnect();
-}
-
-bool inputConnected(){
-	return USBIsConnected();
-}
-
-MIDI_packet waitForInputButtons(){
-	while(true){
-		for(int i = 0; i < GPIO_BTN_COUNT; i++){
-			if(isButtonDown(i) != last_button_state[i]){
-				last_button_state[i] = isButtonDown(i);
-				if(isButtonDown(i))
-					return keydown_to_midi[i];
-				else
-					return keyup_to_midi[i];
-			}
-		}
-	}
-	MIDI_packet def = {0};
-	return def;
-}
-
-MIDI_packet waitForInputUSB(){
+MIDI_packet waitForInput(){
 	USB_output usb_out = USBWaitForData();
 	MIDI_packet midi_out;
 	midi_out.data[0] = usb_out.data[1];
@@ -83,18 +58,14 @@ MIDI_packet waitForInputUSB(){
 	return midi_out;
 }
 
-MIDI_packet waitForInput(){
-	return waitForInputUSB();
-}
-
 void handleMultipleButtonPresses(){
 	for(int i = 0; i < GPIO_BTN_COUNT; i++){
 		if(last_button_state[i] != isButtonDown(i)){
 			last_button_state[i] = isButtonDown(i);
-				if(isButtonDown(i))
-					handleMIDIEvent(keydown_to_midi + i);
-				else
-					handleMIDIEvent(keyup_to_midi + i);
+			if(isButtonDown(i))
+				handleMIDIEvent(keydown_to_midi + i);
+			else
+				handleMIDIEvent(keyup_to_midi + i);
 		}
 	}
 }
