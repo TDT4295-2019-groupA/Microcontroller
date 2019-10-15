@@ -11,7 +11,4 @@
 #define DEVICE_GECKO_STARTER_KIT
 //#define DEVICE_SADIE
 
-//#define INPUT_BUTTONS
-#define INPUT_USB
-
 #endif /* INCLUDES_EFM32_HEADERS_DEFINES_H_ */

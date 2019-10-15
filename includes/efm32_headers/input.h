@@ -16,6 +16,6 @@
 bool connectToInput();
 bool inputConnected();
 MIDI_packet waitForInput();
-
+void handleMultipleButtonPresses();
 
 #endif /* INCLUDES_EFM32_HEADERS_INPUT_H_ */

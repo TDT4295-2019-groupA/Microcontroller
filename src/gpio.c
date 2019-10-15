@@ -6,6 +6,7 @@
 #include "em_cmu.h"
 #include "bsp.h"
 #include "bsp_trace.h"
+#include "input.h"
 
 #ifdef DEVICE_GECKO_STARTER_KIT
 static unsigned int gpio_btn_index_to_pin[] = {
@@ -65,6 +66,7 @@ void handleButtons()
 	for(int i = 0; i < GPIO_BTN_COUNT; i++){
 		button_state[i] = !GPIO_PinInGet(gpio_btn_index_to_port[i], gpio_btn_index_to_pin[i]);
 	}
+	handleMultipleButtonPresses();
 }
 
 bool isButtonDown(unsigned int index){

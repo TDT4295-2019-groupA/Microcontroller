@@ -56,7 +56,7 @@ uint find_specific_generator_id(NoteIndex note_index, uint channel_index, const 
 byte is_valid_generator_id(uint idx);
 void update_generator_state(MicrocontrollerGeneratorState* generator_state, bool enabled, NoteIndex note_index, uint channel_index, Velocity velocity);
 
-void microcontroller_handle_midi_event(const byte *data, size_t length, MicrocontrollerGeneratorState* generator_states);
+void handleMIDIEvent(MIDI_packet* m);
 
 void microcontroller_send_global_state_update(const MicrocontrollerGlobalState* global_state);
 void microcontroller_send_generator_update(ushort generator_index, byte reset_note_lifetime, const MicrocontrollerGeneratorState* generator_state);

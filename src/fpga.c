@@ -1,5 +1,6 @@
 #include "fpga.h"
-// #include "spi_master.h" I need this
+#include <stdio.h>
+#include "segmentlcd.h"
 
 uint find_unused_generator_id(const MicrocontrollerGeneratorState* generator_states)
 {
@@ -32,9 +33,16 @@ void update_generator_state(MicrocontrollerGeneratorState* generator_state, bool
 	generator_state->velocity = velocity;
 }
 
-void microcontroller_handle_midi_event(const byte *data, size_t length, MicrocontrollerGeneratorState* generator_states) {
-    // The UART interrupt handler should call this function when it has recieved a full midi event
+void handleMIDIEvent(MIDI_packet* m) {
+	char converted[7];
 
+	for(int i=0; i < 3; i++) {
+		sprintf(&converted[i*2], "%02X", m->data[i]);
+	}
+	SegmentLCD_Write(converted);
+
+    // The UART interrupt handler should call this function when it has recieved a full midi event
+	/*
     MIDI_packet_info packet_info = get_MIDI_packet_info(data);
 
     // validate packet:
@@ -69,14 +77,14 @@ void microcontroller_handle_midi_event(const byte *data, size_t length, Microcon
             update_generator_state(generator_states + idx, true, note, channel, velocity);
             microcontroller_send_generator_update(idx, true, generator_states);
         }
-        break; case 0b1010: /*IGNORE*/ // Polyphonic Key Pressure (Aftertouch) event
-        break; case 0b1011: /*IGNORE*/ // Control Change event
-        break; case 0b1100: /*IGNORE*/ // Program Chang event
-        break; case 0b1101: /*IGNORE*/ // Channel Pressure (After-touch) event
-        break; case 0b1110: /*IGNORE*/ // Pitch Bend Change event
-        break; case 0b1111: /*IGNORE*/ // System Exclusive event
+        break; case 0b1010:  // Polyphonic Key Pressure (Aftertouch) event
+        break; case 0b1011:  // Control Change event
+        break; case 0b1100:  // Program Chang event
+        break; case 0b1101:  // Channel Pressure (After-touch) event
+        break; case 0b1110:  // Pitch Bend Change event
+        break; case 0b1111:  // System Exclusive event
         break; default: break;         // unknown - ignored
-    }
+    }*/
 }
 
 void microcontroller_send_global_state_update(const MicrocontrollerGlobalState* global_state)

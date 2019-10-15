@@ -4,6 +4,7 @@
 #include "segmentlcd.h"
 #include "input.h"
 #include "gpio.h"
+#include "fpga.h"
 #include "interrupts.h"
 
 void setupCMU(void);
@@ -23,14 +24,11 @@ int main(void)
 
 	if(connectToInput()){
 		SegmentLCD_Write("CONNECT");
-		char converted[7];
+
 		while(inputConnected()){
 			MIDI_packet input = waitForInput();
 			// TODO: do stuff with input
-			for(int i=0; i < 3; i++) {
-				sprintf(&converted[i*2], "%02X", input.data[i]);
-			}
-			SegmentLCD_Write(converted);
+			handleMIDIEvent(&input);
 		}
 		// Connection removed
 		SegmentLCD_Write("CON REM");

@@ -9,6 +9,7 @@
 #include "gpio.h"
 #include "usbhost.h"
 #include "defines.h"
+#include "fpga.h"
 
 static bool last_button_state[GPIO_BTN_COUNT] = {0};
 static MIDI_packet keydown_to_midi[16] = {
@@ -50,28 +51,11 @@ static MIDI_packet keyup_to_midi[16] = {
 
 
 bool connectToInput(){
-
-#if defined(INPUT_BUTTONS) && defined(INPUT_USB) || (!defined(INPUT_BUTTONS) && !defined(INPUT_USB))
-	assert(0); // Must choose 1 input device
-#endif
-
-#ifdef INPUT_BUTTONS
-	return true; // No setup for buttons
-#endif
-
-#ifdef INPUT_USB
 	return USBConnect();
-#endif
 }
 
 bool inputConnected(){
-#ifdef INPUT_BUTTONS
-	return true; // Always connected
-#endif
-
-#ifdef INPUT_USB
 	return USBIsConnected();
-#endif
 }
 
 MIDI_packet waitForInputButtons(){
@@ -100,11 +84,17 @@ MIDI_packet waitForInputUSB(){
 }
 
 MIDI_packet waitForInput(){
-#ifdef INPUT_BUTTONS
-	return waitForInputButtons();
-#endif
-
-#ifdef INPUT_USB
 	return waitForInputUSB();
-#endif
+}
+
+void handleMultipleButtonPresses(){
+	for(int i = 0; i < GPIO_BTN_COUNT; i++){
+		if(last_button_state[i] != isButtonDown(i)){
+			last_button_state[i] = isButtonDown(i);
+				if(isButtonDown(i))
+					handleMIDIEvent(keydown_to_midi + i);
+				else
+					handleMIDIEvent(keyup_to_midi + i);
+		}
+	}
 }
