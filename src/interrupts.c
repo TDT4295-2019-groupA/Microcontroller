@@ -3,8 +3,6 @@
 #include "gpio.h"
 #include "efm32gg.h"
 #include "em_timer.h"
-#include "bsp.h"
-#include "bsp_trace.h"
 #include "em_emu.h"
 
 

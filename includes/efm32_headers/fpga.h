@@ -6,20 +6,21 @@
 #include <stddef.h>
 #include <string.h>
 #include <assert.h>
+#include <stdlib.h>
 
 #include "midi.h"
 
 typedef unsigned int    uint;
-typedef unsigned char   byte;
-typedef signed char     sbyte; // signed byte
-typedef unsigned short  ushort;
+typedef uint8_t			byte;
+typedef int8_t		    sbyte; // signed byte
+typedef uint16_t        ushort;
 typedef byte            NoteIndex;
 typedef byte            ChannelIndex;
-typedef byte            Velocity; // goes from 0 to 127
-typedef signed short    Sample;   // To represent a single audio "frame"
+typedef byte          	Velocity; // goes from 0 to 127
+typedef int16_t			Sample;   // To represent a single audio "frame"
 typedef unsigned int    Time;     // measured in n samples, meaning x second is represented as x * SAMPLE_RATE
 
-#define N_GENERATORS    8 /* number of supported notes playing simultainiously  (polytones), \
+#define N_GENERATORS    16 /*number of supported notes playing simultainiously  (polytones), \
                              subject to change, chisel and microcontroller code \
                              should scale from this single variable alone */
 
@@ -36,7 +37,7 @@ typedef struct Envelope { // either preset or controlled by knobs/buttons on the
 
 typedef struct MicrocontrollerGlobalState {
     Velocity   master_volume;
-    Envelope   envelope;
+    Envelope*  envelope;
     sbyte      pitchwheels [N_MIDI_CHANNELS];
 } __attribute__((packed)) MicrocontrollerGlobalState;
 
@@ -51,14 +52,16 @@ typedef struct MicrocontrollerGeneratorState {
     Velocity   velocity;          // to know which pitchwheel to use
 } __attribute__((packed)) MicrocontrollerGeneratorState;
 
-uint find_unused_generator_id(const MicrocontrollerGeneratorState* generator_states);
-uint find_specific_generator_id(NoteIndex note_index, uint channel_index, const MicrocontrollerGeneratorState* generator_states);
+uint find_unused_generator_id(MicrocontrollerGeneratorState** generator_states);
+uint find_specific_generator_id(NoteIndex note_index, uint channel_index, MicrocontrollerGeneratorState** generator_states);
 byte is_valid_generator_id(uint idx);
 void update_generator_state(MicrocontrollerGeneratorState* generator_state, bool enabled, NoteIndex note_index, uint channel_index, Velocity velocity);
+MicrocontrollerGeneratorState* generator_state_new(void);
+MicrocontrollerGlobalState* global_state_new(void);
 
-void handleMIDIEvent(MIDI_packet* m);
+void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_states);
 
 void microcontroller_send_global_state_update(const MicrocontrollerGlobalState* global_state);
-void microcontroller_send_generator_update(ushort generator_index, byte reset_note_lifetime, const MicrocontrollerGeneratorState* generator_state);
+void microcontroller_send_generator_update(ushort generator_index, bool reset_note_lifetime, const MicrocontrollerGeneratorState** generator_states);
 
 #endif /* SRC_FPGA_H_ */
