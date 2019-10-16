@@ -3,14 +3,14 @@
 #include "segmentlcd.h"
 #include "spi.h"
 
-uint find_unused_generator_id(const MicrocontrollerGeneratorState** generator_states)
+uint find_unused_generator_id(MicrocontrollerGeneratorState** generator_states)
 {
 	uint idx = 0;
 	while (idx < N_GENERATORS && generator_states[idx]->enabled) idx++;
 	return idx;
 }
 
-uint find_specific_generator_id(NoteIndex note_index, uint channel_index, const MicrocontrollerGeneratorState** generator_states)
+uint find_specific_generator_id(NoteIndex note_index, uint channel_index, MicrocontrollerGeneratorState** generator_states)
 {
 	uint idx = 0; // sound_generator_index
 	while (idx < N_GENERATORS && !(
@@ -57,7 +57,7 @@ void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_s
 
             // find the sound generator currenty playing this note
             uint idx = find_specific_generator_id(note, channel, generator_states);
-            if (!is_valid_generator_id(idx)) return; // none found, probably due to the note-on being ignored due to lack of generators
+            //if (!is_valid_generator_id(idx)) return; // none found, probably due to the note-on being ignored due to lack of generators
 
             update_generator_state(generator_states[idx], false, note, channel, velocity);
             microcontroller_send_generator_update(idx, false, generator_states);
@@ -70,8 +70,10 @@ void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_s
 
             // find vacant sound generator
             uint idx = find_unused_generator_id(generator_states); // sound_generator_index
-            if (!is_valid_generator_id(idx)) return; // out of sound generators, ignore
-
+            //if (!is_valid_generator_id(idx)) return; // out of sound generators, ignore
+            char output[4];
+            snprintf(output, 4, "%3d", idx);
+            SegmentLCD_Write(output);
             update_generator_state(generator_states[idx], true, note, channel, velocity);
             microcontroller_send_generator_update(idx, true, generator_states);
         }
@@ -93,9 +95,9 @@ void microcontroller_send_global_state_update(const MicrocontrollerGlobalState* 
 
 	memcpy(data+1, global_state, sizeof(MicrocontrollerGlobalState));
 
-	data[sizeof(data)/sizeof(byte)-1] = '\n'; // so my arduino is happy. remove it when connecting to the fpga. TODO
+	data[sizeof(data)/sizeof(byte)-1] = '\0'; // so my arduino is happy. remove it when connecting to the fpga. TODO
 
-	spi_transmit((uint8_t*)data, sizeof(data));
+	spi_transmit((byte*)data, sizeof(data));
 }
 
 void microcontroller_send_generator_update(ushort generator_index, bool reset_note_lifetime, const MicrocontrollerGeneratorState** generator_states)
@@ -110,7 +112,11 @@ void microcontroller_send_generator_update(ushort generator_index, bool reset_no
 
 	memcpy(data+2+sizeof(ushort), generator_states[generator_index], sizeof(MicrocontrollerGeneratorState));
 
-	data[sizeof(data)/sizeof(byte)-1] = '\n'; // so my arduino is happy. remove it when connecting to the fpga. TODO
+	data[sizeof(data)/sizeof(byte)-1] = '\0'; // so my arduino is happy. remove it when connecting to the fpga. TODO
+
+	char output[29];
+	const MicrocontrollerGeneratorState* blah = generator_states[generator_index];
+	snprintf(output, 29, "index: %6d, velocity: %3d", blah->channel_index, blah->velocity);
 
 	spi_transmit((byte*)data, sizeof(data));
 }

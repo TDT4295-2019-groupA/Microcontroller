@@ -20,7 +20,7 @@ typedef byte          	Velocity; // goes from 0 to 127
 typedef int16_t			Sample;   // To represent a single audio "frame"
 typedef unsigned int    Time;     // measured in n samples, meaning x second is represented as x * SAMPLE_RATE
 
-#define N_GENERATORS    8 /* number of supported notes playing simultainiously  (polytones), \
+#define N_GENERATORS    16 /*number of supported notes playing simultainiously  (polytones), \
                              subject to change, chisel and microcontroller code \
                              should scale from this single variable alone */
 
@@ -52,8 +52,8 @@ typedef struct MicrocontrollerGeneratorState {
     Velocity   velocity;          // to know which pitchwheel to use
 } __attribute__((packed)) MicrocontrollerGeneratorState;
 
-uint find_unused_generator_id(const MicrocontrollerGeneratorState** generator_states);
-uint find_specific_generator_id(NoteIndex note_index, uint channel_index, const MicrocontrollerGeneratorState** generator_states);
+uint find_unused_generator_id(MicrocontrollerGeneratorState** generator_states);
+uint find_specific_generator_id(NoteIndex note_index, uint channel_index, MicrocontrollerGeneratorState** generator_states);
 byte is_valid_generator_id(uint idx);
 void update_generator_state(MicrocontrollerGeneratorState* generator_state, bool enabled, NoteIndex note_index, uint channel_index, Velocity velocity);
 MicrocontrollerGeneratorState* generator_state_new(void);
