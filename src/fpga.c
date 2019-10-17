@@ -41,6 +41,7 @@ void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_s
 		sprintf(&converted[i*2], "%02X", m->data[i]);
 	}
 	converted[6] = '\n';
+	// SegmentLCD_Write(converted); // devkit: write the packet data as hex to the display
     // The UART interrupt handler should call this function when it has recieved a full midi event
     MIDI_packet_info packet_info = get_MIDI_packet_info(m->data);
 
@@ -49,33 +50,40 @@ void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_s
     // interpret and handle packet:
     switch (packet_info.packet_type) {
         // see https://www.midi.org/specifications-old/item/table-1-summary-of-midi-message
-        break; case 0b1000: { // note-off event
-            //assert(length == 3);
-            ChannelIndex   channel  = packet_info.type_specifier;
-            NoteIndex      note     = m->data[1];
-            Velocity       velocity = m->data[2];
-
-            // find the sound generator currenty playing this note
-            uint idx = find_specific_generator_id(note, channel, generator_states);
-            //if (!is_valid_generator_id(idx)) return; // none found, probably due to the note-on being ignored due to lack of generators
-
-            update_generator_state(generator_states[idx], false, note, channel, velocity);
-            microcontroller_send_generator_update(idx, false, generator_states);
-        }
+        break; case 0b1000: // note-off event (our keyboard does not send this)
         break; case 0b1001: { // note-on event
             //assert(length == 3);
             ChannelIndex   channel  = packet_info.type_specifier;
             NoteIndex      note     = m->data[1];
             Velocity       velocity = m->data[2];
 
-            // find vacant sound generator
-            uint idx = find_unused_generator_id(generator_states); // sound_generator_index
-            //if (!is_valid_generator_id(idx)) return; // out of sound generators, ignore
-            char output[4];
-            snprintf(output, 4, "%3d", idx);
-            SegmentLCD_Write(output);
-            update_generator_state(generator_states[idx], true, note, channel, velocity);
-            microcontroller_send_generator_update(idx, true, generator_states);
+			// devkit: show velocity as radial indicator
+            for (int si = 0; si < 8; si++) {
+            	SegmentLCD_ARing(si, 0); // turn off all segments
+            }
+            for (int si = 0; si < 8; si++) {
+            	SegmentLCD_ARing(si, velocity >= (0b1 << si) ? 1 : 0); // turn on up to value
+            }
+
+            if (velocity) { // a button on the keyboard was actually pressed
+            	// find vacant sound generator
+				uint idx = find_unused_generator_id(generator_states); // sound_generator_index
+				//if (!is_valid_generator_id(idx)) return; // out of sound generators, ignore
+				char output[4];
+				snprintf(output, 4, "%3d", idx);
+				SegmentLCD_Write(output);
+				update_generator_state(generator_states[idx], true, note, channel, velocity);
+				microcontroller_send_generator_update(idx, true, generator_states);
+				SegmentLCD_Number(note);  // display which note
+            } else { // counts as a note-off event for our keyboard
+            	// find the sound generator currenty playing this note
+				uint idx = find_specific_generator_id(note, channel, generator_states);
+				//if (!is_valid_generator_id(idx)) return; // none found, probably due to the note-on being ignored due to lack of generators
+
+				update_generator_state(generator_states[idx], false, note, channel, velocity);
+				microcontroller_send_generator_update(idx, false, generator_states);
+				SegmentLCD_Number(0000);
+            }
         }
         break; case 0b1010:  // Polyphonic Key Pressure (Aftertouch) event
         break; case 0b1011:  // Control Change event
