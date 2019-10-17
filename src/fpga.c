@@ -10,6 +10,23 @@ uint find_unused_generator_id(MicrocontrollerGeneratorState** generator_states)
 	return idx;
 }
 
+int find_vacant_generator_channel(MicrocontrollerGeneratorState** generator_states) {
+    // we need to assign notes to generators in a round-robin fashion to avoid
+    // overruling the generators which are still generating the release sound too much
+
+    static int starting_pos = 0;
+    int pos = starting_pos;
+    while (generator_states[pos]->enabled) {
+        pos++;
+        if (pos >= N_GENERATORS) pos = 0;
+        if (pos == starting_pos) return -1;
+
+    }
+
+    starting_pos = (pos+1) % N_GENERATORS;
+    return pos;
+}
+
 uint find_specific_generator_id(NoteIndex note_index, uint channel_index, MicrocontrollerGeneratorState** generator_states)
 {
 	uint idx = 0; // sound_generator_index
@@ -50,7 +67,23 @@ void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_s
     // interpret and handle packet:
     switch (packet_info.packet_type) {
         // see https://www.midi.org/specifications-old/item/table-1-summary-of-midi-message
-        break; case 0b1000: // note-off event (our keyboard does not send this)
+        break; case 0b1000: { note_off_event: ; // note-off event (our keyboard does not send this)
+            //assert(length == 3);
+            ChannelIndex   channel  = packet_info.type_specifier;
+            NoteIndex      note     = m->data[1];
+            Velocity       velocity = m->data[2];
+
+            if (channel == 9) return; // ignore drums
+
+            // find the sound generator currenty playing this note
+			uint idx = find_specific_generator_id(note, channel, generator_states);
+			if (!is_valid_generator_id(idx)) return; // none found, probably due to the note-on being ignored due to lack of generators
+
+			update_generator_state(generator_states[idx], false, note, channel, velocity);
+			microcontroller_send_generator_update(idx, false, generator_states);
+
+			SegmentLCD_Number(0000);
+        }
         break; case 0b1001: { // note-on event
             //assert(length == 3);
             ChannelIndex   channel  = packet_info.type_specifier;
@@ -65,31 +98,31 @@ void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_s
             	SegmentLCD_ARing(si, velocity >= (0b1 << si) ? 1 : 0); // turn on up to value
             }
 
-            if (velocity) { // a button on the keyboard was actually pressed
-            	// find vacant sound generator
-				uint idx = find_unused_generator_id(generator_states); // sound_generator_index
-				//if (!is_valid_generator_id(idx)) return; // out of sound generators, ignore
-				char output[4];
-				snprintf(output, 4, "%3d", idx);
-				SegmentLCD_Write(output);
-				update_generator_state(generator_states[idx], true, note, channel, velocity);
-				microcontroller_send_generator_update(idx, true, generator_states);
-				SegmentLCD_Number(note);  // display which note
-            } else { // counts as a note-off event for our keyboard
-            	// find the sound generator currenty playing this note
-				uint idx = find_specific_generator_id(note, channel, generator_states);
-				//if (!is_valid_generator_id(idx)) return; // none found, probably due to the note-on being ignored due to lack of generators
+            if (channel == 9) return; // ignore drums
+            if (velocity == 0) goto note_off_event; // people suck at following the midi standard
 
-				update_generator_state(generator_states[idx], false, note, channel, velocity);
-				microcontroller_send_generator_update(idx, false, generator_states);
-				SegmentLCD_Number(0000);
+            // find vacant sound generator
+			uint idx = find_unused_generator_id(generator_states); // sound_generator_index
+			if (!is_valid_generator_id(idx)) { // out of generators, ignore
+				SegmentLCD_Write("OUTOFGN");
+            	return;
             }
+
+			update_generator_state(generator_states[idx], true, note, channel, velocity);
+			microcontroller_send_generator_update(idx, true, generator_states);
+
+			// devkit: display note and generator index
+			SegmentLCD_LowerNumber(idx);
+			SegmentLCD_Number(note);
         }
         break; case 0b1010:  // Polyphonic Key Pressure (Aftertouch) event
         break; case 0b1011:  // Control Change event
         break; case 0b1100:  // Program Chang event
         break; case 0b1101:  // Channel Pressure (After-touch) event
-        break; case 0b1110:  // Pitch Bend Change event
+        break; case 0b1110: { // Pitch Bend Change event
+        	Pitch pitch = m->data[2];
+        	SegmentLCD_Number(pitch);
+        }
         break; case 0b1111:  // System Exclusive event
         break; default: break;         // unknown - ignored
     }

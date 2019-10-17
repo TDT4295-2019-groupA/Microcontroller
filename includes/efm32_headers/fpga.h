@@ -17,6 +17,7 @@ typedef uint16_t        ushort;
 typedef byte            NoteIndex;
 typedef byte            ChannelIndex;
 typedef byte          	Velocity; // goes from 0 to 127
+typedef byte			Pitch;	  // also goes from 0 to 127, where 64(?) is default pitch
 typedef int16_t			Sample;   // To represent a single audio "frame"
 typedef unsigned int    Time;     // measured in n samples, meaning x second is represented as x * SAMPLE_RATE
 
