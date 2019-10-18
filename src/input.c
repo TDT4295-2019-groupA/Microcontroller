@@ -19,12 +19,12 @@ int MIDI_channelValue = 0;
 
 //MIDI control package, standar for bytte av instrument, 0-127 valg. alt på channel 1 (0) for øyeblikket
 static MIDI_cntrl_packet instruments[6] = {
-		{{0xc0, 10}},
-		{{0xc0, 20}},
-		{{0xc0, 30}},
-		{{0xc0, 40}},
-		{{0xc0, 50}},
-		{{0xc0, 60}}
+		{{0xc0, 0x0a}},
+		{{0xc0, 0x14}},
+		{{0xc0, 0x1e}},
+		{{0xc0, 0x28}},
+		{{0xc0, 0x32}},
+		{{0xc0, 0x3c}}
 };
 
 static bool last_button_state[GPIO_BTN_COUNT] = {0};
