@@ -26,6 +26,10 @@ typedef struct MIDI_packet{
 	byte data[3];
 } MIDI_packet;
 
+typedef struct MIDI_cntrl_packet{
+	byte data[2];
+} MIDI_cntrl_packet;
+
 MIDI_packet_info get_MIDI_packet_info(const byte* data);
 bool validate_MIDI_packet(const byte* data, size_t length);
 

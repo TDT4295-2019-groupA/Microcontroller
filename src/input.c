@@ -3,6 +3,9 @@
  *
  *  Created on: 14. okt. 2019
  *      Author: Eilif
+ *
+ * 	Edited on: 18. okt. 2019
+ * 		Author: Markus
  */
 
 #include "input.h"
@@ -10,6 +13,19 @@
 #include "usbhost.h"
 #include "defines.h"
 #include "fpga.h"
+
+int octaveShiftValue = 0;
+int MIDI_channelValue = 0;
+
+//MIDI control package, standar for bytte av instrument, 0-127 valg. alt på channel 1 (0) for øyeblikket
+static MIDI_cntrl_packet instruments[6] = {
+		{{0xc0, 10}},
+		{{0xc0, 20}},
+		{{0xc0, 30}},
+		{{0xc0, 40}},
+		{{0xc0, 50}},
+		{{0xc0, 60}}
+};
 
 static bool last_button_state[GPIO_BTN_COUNT] = {0};
 static MIDI_packet keydown_to_midi[16] = {
@@ -30,6 +46,42 @@ static MIDI_packet keydown_to_midi[16] = {
 		{{0x90, 0x3e, 0x7f}},
 		{{0x90, 0x3f, 0x7f}}
 };
+static MIDI_packet keydown_to_midi_left_shift[16] = {
+		{{0x90, 0x24, 0x7f}},
+		{{0x90, 0x25, 0x7f}},
+		{{0x90, 0x26, 0x7f}},
+		{{0x90, 0x27, 0x7f}},
+		{{0x90, 0x28, 0x7f}},
+		{{0x90, 0x29, 0x7f}},
+		{{0x90, 0x2a, 0x7f}},
+		{{0x90, 0x2b, 0x7f}},
+		{{0x90, 0x2c, 0x7f}},
+		{{0x90, 0x2d, 0x7f}},
+		{{0x90, 0x2e, 0x7f}},
+		{{0x90, 0x2f, 0x7f}},
+		{{0x90, 0x30, 0x7f}},
+		{{0x90, 0x31, 0x7f}},
+		{{0x90, 0x32, 0x7f}},
+		{{0x90, 0x33, 0x7f}}
+};
+static MIDI_packet keydown_to_midi_right_shift[16] = {
+		{{0x90, 0x3c, 0x7f}},
+		{{0x90, 0x3d, 0x7f}},
+		{{0x90, 0x3e, 0x7f}},
+		{{0x90, 0x3f, 0x7f}},
+		{{0x90, 0x40, 0x7f}},
+		{{0x90, 0x41, 0x7f}},
+		{{0x90, 0x42, 0x7f}},
+		{{0x90, 0x43, 0x7f}},
+		{{0x90, 0x44, 0x7f}},
+		{{0x90, 0x45, 0x7f}},
+		{{0x90, 0x46, 0x7f}},
+		{{0x90, 0x47, 0x7f}},
+		{{0x90, 0x48, 0x7f}},
+		{{0x90, 0x49, 0x7f}},
+		{{0x90, 0x4a, 0x7f}},
+		{{0x90, 0x4b, 0x7f}}
+};
 static MIDI_packet keyup_to_midi[16] = {
 		{{0x80, 0x30, 0x00}},
 		{{0x80, 0x31, 0x00}},
@@ -48,6 +100,42 @@ static MIDI_packet keyup_to_midi[16] = {
 		{{0x80, 0x3e, 0x00}},
 		{{0x80, 0x3f, 0x00}}
 };
+static MIDI_packet keyup_to_midi_left_shift[16] = {
+		{{0x80, 0x24, 0x00}},
+		{{0x80, 0x25, 0x00}},
+		{{0x80, 0x26, 0x00}},
+		{{0x80, 0x27, 0x00}},
+		{{0x80, 0x28, 0x00}},
+		{{0x80, 0x29, 0x00}},
+		{{0x80, 0x2a, 0x00}},
+		{{0x80, 0x2b, 0x00}},
+		{{0x80, 0x2c, 0x00}},
+		{{0x80, 0x2d, 0x00}},
+		{{0x80, 0x2e, 0x00}},
+		{{0x80, 0x2f, 0x00}},
+		{{0x80, 0x30, 0x00}},
+		{{0x80, 0x31, 0x00}},
+		{{0x80, 0x32, 0x00}},
+		{{0x80, 0x33, 0x00}}
+};
+static MIDI_packet keyup_to_midi_right_shift[16] = {
+		{{0x80, 0x3c, 0x00}},
+		{{0x80, 0x3d, 0x00}},
+		{{0x80, 0x3e, 0x00}},
+		{{0x80, 0x3f, 0x00}},
+		{{0x80, 0x40, 0x00}},
+		{{0x80, 0x41, 0x00}},
+		{{0x80, 0x42, 0x00}},
+		{{0x80, 0x43, 0x00}},
+		{{0x80, 0x44, 0x00}},
+		{{0x80, 0x45, 0x00}},
+		{{0x80, 0x46, 0x00}},
+		{{0x80, 0x47, 0x00}},
+		{{0x80, 0x48, 0x00}},
+		{{0x80, 0x49, 0x00}},
+		{{0x80, 0x4a, 0x00}},
+		{{0x80, 0x4b, 0x00}}
+};
 
 MIDI_packet waitForInput(){
 	USB_output usb_out = USBWaitForData();
@@ -62,10 +150,50 @@ void handleMultipleButtonPresses(MicrocontrollerGeneratorState** generator_state
 	for(int i = 0; i < GPIO_BTN_COUNT; i++){
 		if(last_button_state[i] != isButtonDown(i)){
 			last_button_state[i] = isButtonDown(i);
-			if(isButtonDown(i))
-				handleMIDIEvent(&keydown_to_midi[i], generator_states);
+			if(isButtonDown(i)){
+				//skifter ned en oktav
+				if(i == 0 && octaveShiftValue >= 0){
+					octaveShiftValue--;
+				}
+				//skifter opp en oktav
+				else if(i == 1 && octaveShiftValue <= 0){
+					octaveShiftValue ++;
+				}
+
+				//------------------- Bytter instrument på channel 1 --------------------
+				/*else if (i == 2){
+					if(MIDI_channelValue <= 5){
+						MIDI_channelValue++;
+						handleMIDIEvent(&instruments[MIDI_channelValue], generator_states);
+					}
+					else{
+						MIDI_channelValue = 0;
+						handleMIDIEvent(&instruments[MIDI_channelValue], generator_states);
+				}
+				}
+
+				*/
+
+				//--------------------------------------------------------------------------
+
+				//mellomoktav default spilles, knapp 0, 1 og 2 er reservert
+				if(octaveShiftValue == 0 && i !=0 && i != 1 && i != 2)
+					handleMIDIEvent(&keydown_to_midi[i], generator_states);
+				//knappene skifter og spiller en oktav mot høyre/opp
+				else if(octaveShiftValue == 1 && i !=0 && i != 1 && i != 2)
+					handleMIDIEvent(&keydown_to_midi_right_shift[i], generator_states);
+				//knappene skifter og spiller en oktav mot venstre/ned
+				else if(octaveShiftValue == -1 && i !=0 && i != 1 && i != 2)
+					handleMIDIEvent(&keydown_to_midi_left_shift[i], generator_states);
+			}
 			else
-				handleMIDIEvent(&keyup_to_midi[i], generator_states);
+				if(octaveShiftValue == 0 && i !=0 && i != 1 && i != 2)
+					handleMIDIEvent(&keyup_to_midi[i], generator_states);
+				else if (octaveShiftValue == 1 && i !=0 && i != 1 && i != 2)
+					handleMIDIEvent(&keyup_to_midi_right_shift[i], generator_states);
+				else if(octaveShiftValue == -1 && i !=0 && i != 1 && i != 2)
+					handleMIDIEvent(&keyup_to_midi_left_shift[i], generator_states);
 		}
 	}
 }
+
