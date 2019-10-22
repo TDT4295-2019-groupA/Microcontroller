@@ -12,6 +12,9 @@
 #include "midi.h"
 #include "defines.h"
 
+#define CHANGE_INSTRUMENT_BUTTON 7
+#define OCTAVE_DOWN_BUTTON 13
+#define OCTAVE_UP_BUTTON 14
 
 bool connectToInput();
 bool inputConnected();

@@ -7,8 +7,20 @@
 typedef unsigned char byte;
 #define N_MIDI_KEYS     128
 #define N_MIDI_CHANNELS 16
-#define MIDI_A3_INDEX   45    /* see https://www.noterepeat.com/articles/how-to/213-midi-basics-common-terms-explained */
-#define MIDI_A3_FREQ    440.0 /* no, i won't listen to your A=432Hz bullshit */
+
+#define NOTES_IN_OCTAVE 12
+#define MIDI_C4 	60
+#define MIDI_CS4 	61
+#define MIDI_D4 	62
+#define MIDI_DS4 	63
+#define MIDI_E4 	64
+#define MIDI_F4 	65
+#define MIDI_FS4 	66
+#define MIDI_G4 	67
+#define MIDI_GS4 	68
+#define MIDI_A4 	69
+#define MIDI_AS4 	70
+#define MIDI_B4 	71
 
 typedef enum Instrument { // we can expand this as much as we want
     SQUARE   = 0,
