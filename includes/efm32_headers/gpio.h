@@ -9,7 +9,12 @@
 
 #include "defines.h"
 
+#ifdef DEVICE_GECKO_STARTER_KIT
+#define GPIO_BTN_COUNT 2
+#endif
+#ifdef DEVICE_SADIE
 #define GPIO_BTN_COUNT 16
+#endif
 
 void setupGPIO(void);
 void handleButtons(void);
