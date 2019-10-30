@@ -67,7 +67,7 @@ static MIDI_packet keyup_to_midi[GPIO_BTN_COUNT] = {
 
 static int octave_shift_min = -4;
 static int octave_shift = 0;
-static int octave_shift_max = 4;
+static int octave_shift_max = 3;
 
 // Yes this is ugly thank you
 static int button_is_on_keyboard[GPIO_BTN_COUNT] = {1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0};
