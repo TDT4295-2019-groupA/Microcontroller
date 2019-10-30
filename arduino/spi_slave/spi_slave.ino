@@ -9,7 +9,8 @@ char buf [100];
 char readable [500];
 volatile byte pos;
 volatile boolean process_it;
-
+int processed = 0;
+ 
 void setup (void)
 {
   Serial.begin (9600);   // debugging
@@ -39,10 +40,15 @@ ISR (SPI_STC_vect)
   // add to buffer if room
   if (pos < (sizeof (buf) - 1))
     buf [pos++] = c;
+  processed++;
+  Serial.print(c);
   // example: newline means time to process buffer
-  //Serial.println (c);
-  if (c == '\0')
+  if ((buf[0] == 1 && processed >= 22) || (buf[0] == 2 && processed >= 13)) {
+    Serial.print("\n");
     process_it = true;
+  } else if (buf[0] != 1 && buf[0] != 2 && c == '\0') {
+    process_it = true;
+  }
 
 }  // end of interrupt routine SPI_STC_vect
 
@@ -78,6 +84,7 @@ void loop (void)
     memset(buf, 0, sizeof(buf));
     memset(readable, 0, sizeof(readable));
     process_it = false;
+    processed = 0;
   }  // end of flag set
 
 }  // end of loop
