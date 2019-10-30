@@ -98,17 +98,19 @@ void handleMultipleButtonPresses(MicrocontrollerGeneratorState** generator_state
 				handleMIDIEvent(&packet_to_send, generator_states);
 			}
 			else{ // Handle buttonmenu events
-				if(i == CHANGE_INSTRUMENT_BUTTON){
-					// Change instrument
-					int a = 0;
-				}
-				else if(i == OCTAVE_DOWN_BUTTON){
-					octave_shift--;
-					if (octave_shift < octave_shift_min) octave_shift = octave_shift_min;
-				}
-				else if(i == OCTAVE_UP_BUTTON){
-					octave_shift++;
-					if (octave_shift > octave_shift_max) octave_shift = octave_shift_max;
+				if(isButtonDown(i)){
+					if(i == CHANGE_INSTRUMENT_BUTTON){
+						// Change instrument
+						int a = 0;
+					}
+					else if(i == OCTAVE_DOWN_BUTTON){
+						octave_shift--;
+						if (octave_shift < octave_shift_min) octave_shift = octave_shift_min;
+					}
+					else if(i == OCTAVE_UP_BUTTON){
+						octave_shift++;
+						if (octave_shift > octave_shift_max) octave_shift = octave_shift_max;
+					}
 				}
 			}
 		}
