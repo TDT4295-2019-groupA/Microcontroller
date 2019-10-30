@@ -76,7 +76,7 @@ static int octave_shift = 0;
 static int octave_shift_max = 3;
 
 // Yes this is ugly thank you
-static int button_is_on_keyboard[GPIO_BTN_COUNT] = {1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0};
+static int button_is_on_keyboard[GPIO_BTN_COUNT] = {1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0};
 
 MIDI_packet waitForInput(){
 	USB_output usb_out = USBWaitForData();
@@ -104,26 +104,13 @@ void handleMultipleButtonPresses(MicrocontrollerGeneratorState** generator_state
 				handleMIDIEvent(&packet_to_send, generator_states);
 			}
 			else{ // Handle buttonmenu events
-<<<<<<< HEAD
-				if(i == CHANGE_INSTRUMENT_BUTTON){
-					// Change instrument
-					if(instrumentValue <= 3)
-						instrumentValue++;
-					if(instrumentValue >3)
-						instrumentValue = 0;
-				}
-				else if(i == OCTAVE_DOWN_BUTTON){
-					octave_shift--;
-					if (octave_shift < octave_shift_min) octave_shift = octave_shift_min;
-				}
-				else if(i == OCTAVE_UP_BUTTON){
-					octave_shift++;
-					if (octave_shift > octave_shift_max) octave_shift = octave_shift_max;
-=======
 				if(isButtonDown(i)){
 					if(i == CHANGE_INSTRUMENT_BUTTON){
 						// Change instrument
-						int a = 0;
+						if(instrumentValue <= 3)
+							instrumentValue++;
+						if(instrumentValue >3)
+							instrumentValue = 0;
 					}
 					else if(i == OCTAVE_DOWN_BUTTON){
 						octave_shift--;
@@ -133,7 +120,7 @@ void handleMultipleButtonPresses(MicrocontrollerGeneratorState** generator_state
 						octave_shift++;
 						if (octave_shift > octave_shift_max) octave_shift = octave_shift_max;
 					}
->>>>>>> d7eebab343075662207de58d07bee001302cc949
+
 				}
 			}
 		}
