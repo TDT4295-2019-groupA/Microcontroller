@@ -17,6 +17,12 @@
 int octaveShiftValue = 0;
 int MIDI_channelValue = 0;
 
+int instrumentValue = 0;
+
+int getInstrumentValue(){
+	return instrumentValue;
+}
+
 //MIDI control package, standar for bytte av instrument, 0-127 valg. alt på channel 1 (0) for øyeblikket
 static MIDI_cntrl_packet instruments[6] = {
 		{{0xc0, 0x0a}},
@@ -70,7 +76,7 @@ static int octave_shift = 0;
 static int octave_shift_max = 4;
 
 // Yes this is ugly thank you
-static int button_is_on_keyboard[GPIO_BTN_COUNT] = {1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0};
+static int button_is_on_keyboard[GPIO_BTN_COUNT] = {1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0};
 
 MIDI_packet waitForInput(){
 	USB_output usb_out = USBWaitForData();
@@ -100,7 +106,10 @@ void handleMultipleButtonPresses(MicrocontrollerGeneratorState** generator_state
 			else{ // Handle buttonmenu events
 				if(i == CHANGE_INSTRUMENT_BUTTON){
 					// Change instrument
-					int a = 0;
+					if(instrumentValue <= 3)
+						instrumentValue++;
+					if(instrumentValue >3)
+						instrumentValue = 0;
 				}
 				else if(i == OCTAVE_DOWN_BUTTON){
 					octave_shift--;
