@@ -73,7 +73,7 @@ static MIDI_packet keyup_to_midi[GPIO_BTN_COUNT] = {
 
 static int octave_shift_min = -4;
 static int octave_shift = 0;
-static int octave_shift_max = 4;
+static int octave_shift_max = 3;
 
 // Yes this is ugly thank you
 static int button_is_on_keyboard[GPIO_BTN_COUNT] = {1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0};
@@ -104,6 +104,7 @@ void handleMultipleButtonPresses(MicrocontrollerGeneratorState** generator_state
 				handleMIDIEvent(&packet_to_send, generator_states);
 			}
 			else{ // Handle buttonmenu events
+<<<<<<< HEAD
 				if(i == CHANGE_INSTRUMENT_BUTTON){
 					// Change instrument
 					if(instrumentValue <= 3)
@@ -118,6 +119,21 @@ void handleMultipleButtonPresses(MicrocontrollerGeneratorState** generator_state
 				else if(i == OCTAVE_UP_BUTTON){
 					octave_shift++;
 					if (octave_shift > octave_shift_max) octave_shift = octave_shift_max;
+=======
+				if(isButtonDown(i)){
+					if(i == CHANGE_INSTRUMENT_BUTTON){
+						// Change instrument
+						int a = 0;
+					}
+					else if(i == OCTAVE_DOWN_BUTTON){
+						octave_shift--;
+						if (octave_shift < octave_shift_min) octave_shift = octave_shift_min;
+					}
+					else if(i == OCTAVE_UP_BUTTON){
+						octave_shift++;
+						if (octave_shift > octave_shift_max) octave_shift = octave_shift_max;
+					}
+>>>>>>> d7eebab343075662207de58d07bee001302cc949
 				}
 			}
 		}
