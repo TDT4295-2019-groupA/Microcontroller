@@ -2,6 +2,7 @@
 #include "fpga.h"
 #include "segmentlcd.h"
 #include "spi.h"
+#include "input.h"
 
 uint find_unused_generator_id(MicrocontrollerGeneratorState** generator_states)
 {
@@ -49,6 +50,7 @@ void update_generator_state(MicrocontrollerGeneratorState* generator_state, bool
 	generator_state->note_index = note_index;
 	generator_state->channel_index = channel_index;
 	generator_state->velocity = velocity;
+	generator_state->instrument = getInstrumentValue();
 }
 
 void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_states) {
@@ -112,7 +114,7 @@ void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_s
 			microcontroller_send_generator_update(idx, true, generator_states);
 
 			// devkit: display note and generator index
-			SegmentLCD_LowerNumber(idx);
+			SegmentLCD_LowerNumber(getInstrumentValue());
 			SegmentLCD_Number(note);
         }
         break; case 0b1010:  // Polyphonic Key Pressure (Aftertouch) event
