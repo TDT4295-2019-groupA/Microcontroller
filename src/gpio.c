@@ -54,6 +54,9 @@ void setupGPIO(void)
 		GPIO_PinModeSet(gpioPortC, i, gpioModeInputPullFilter, 1);
 		GPIO_ExtIntConfig(gpioPortC, i, i, true, false, true);
 	}*/
+	// turn on Softmute
+	GPIO_PinModeSet(gpioPortA, 1, gpioModePushPull, 1);
+	setSoftMute(true);
 }
 
 void led()
@@ -72,4 +75,12 @@ void handleButtons()
 bool isButtonDown(unsigned int index){
 	assert(index < GPIO_BTN_COUNT);
 	return button_state[index];
+}
+
+void setSoftMute(bool high) {
+	if (high)
+		GPIO_PinOutSet(gpioPortA, 1);
+	else
+		GPIO_PinOutClear(gpioPortA, 1);
+
 }

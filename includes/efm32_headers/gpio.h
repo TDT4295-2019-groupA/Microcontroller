@@ -20,5 +20,6 @@ void setupGPIO(void);
 void handleButtons(void);
 
 bool isButtonDown(unsigned int index);
+void setSoftMute(bool high);
 
 #endif /* HEADERS_GPIO_H_ */
