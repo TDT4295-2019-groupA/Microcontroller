@@ -1,7 +1,6 @@
 #include <stdbool.h>
 #include "interrupts.h"
 #include "gpio.h"
-#include "efm32gg.h"
 #include "em_timer.h"
 #include "em_emu.h"
 

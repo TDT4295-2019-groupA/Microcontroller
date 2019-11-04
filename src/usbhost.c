@@ -1,3 +1,4 @@
+#include "defines.h"
 #include "usbhost.h"
 
 STATIC_UBUF(tmpBuf, 1024);
@@ -13,15 +14,18 @@ bool USBConnect()
 	USBH_Init_TypeDef is = USBH_INIT_DEFAULT;
 	int connectionResult = 1;
 	USBH_Init(&is);
+#ifndef DEVICE_SADIE
 	SegmentLCD_Write("USB IN");
+#endif
 	while (connectionResult != USB_STATUS_OK) {
 		connectionResult = USBH_WaitForDeviceConnectionB(tmpBuf, 10);
 		if ( connectionResult == USB_STATUS_OK ) {
+#ifndef DEVICE_SADIE
 	    	SegmentLCD_Write("Device");
 	    	USBTIMER_DelayMs(500);
 	    	SegmentLCD_Write("Added");
 	    	USBTIMER_DelayMs(500);
-
+#endif
 	    	if (USBH_QueryDeviceB(tmpBuf, sizeof(tmpBuf), USBH_GetPortSpeed())
 	          == USB_STATUS_OK) {
 	    		USBH_InitDeviceData(&device, tmpBuf, ep, 1, USBH_GetPortSpeed());
@@ -32,7 +36,9 @@ bool USBConnect()
 	    	}
 		}
 	}
+#ifndef DEVICE_SADIE
 	SegmentLCD_Write("meg");
+#endif
 	return true;
 }
 

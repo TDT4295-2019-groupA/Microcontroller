@@ -4,19 +4,22 @@
 SPIDRV_HandleData_t handleData;
 SPIDRV_Handle_t handle = &handleData;
 
-#define SPIDRV_MASTER_USART3                                           \
-  {                                                                    \
-    USART1,                     /* USART port                       */ \
-    _USART_ROUTE_LOCATION_LOC1, /* USART pins location number       */ \
-    9600,                     /* Bitrate                          */ \
-    8,                          /* Frame length                     */ \
-    0,                          /* Dummy Tx value for Rx only funcs */ \
-    spidrvMaster,               /* SPI mode                         */ \
-    spidrvBitOrderMsbFirst,     /* Bit order on bus                 */ \
-    spidrvClockMode0,           /* SPI clock/phase mode             */ \
-    spidrvCsControlAuto,        /* CS controlled by the driver      */ \
-    spidrvSlaveStartImmediate   /* Slave start transfers immediately*/ \
-  }
+
+//#define SPIDRV_MASTER_USART3                                           \
+//  {                                                                    \
+//    USART1,                     /* USART port                       */ \
+//	_USART_ROUTELOC0_TXLOC_LOC1, /* USART Tx pin location number    */ \
+//	_USART_ROUTELOC0_RXLOC_LOC1, /* USART Rx pin location number    */ \
+//    9600,                     /* Bitrate                          */ \
+//    8,                          /* Frame length                     */ \
+//    0,                          /* Dummy Tx value for Rx only funcs */ \
+//    spidrvMaster,               /* SPI mode                         */ \
+//   spidrvBitOrderMsbFirst,     /* Bit order on bus                 */ \
+//   spidrvClockMode0,           /* SPI clock/phase mode             */ \
+//    spidrvCsControlAuto,        /* CS controlled by the driver      */ \
+//    spidrvSlaveStartImmediate   /* Slave start transfers immediately*/ \
+//  }
+//
 
 void TransferComplete( SPIDRV_Handle_t handle,
                        Ecode_t transferStatus,
