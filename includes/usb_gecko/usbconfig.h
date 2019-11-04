@@ -47,4 +47,4 @@ extern "C" {
 
 #endif /* __USBCONFIG_H */
 
-#define   USB_CLKSRC_HFXO
+#define   USB_CLKSRC_USHFRCO

@@ -51,15 +51,14 @@ void setupGPIO(void)
 		GPIO_ExtIntConfig(gpio_btn_index_to_port[i], gpio_btn_index_to_pin[i], gpio_btn_index_to_pin[i], true, true, true);
 	}
 	/*for(unsigned int i=4; i<16; i++) {
-		GPIO_PinModeSet(gpioPortC, i, gpioModeInputPullFilter, 1);
+		GPIO_PinModeSet(gpioPortC, i, gpioModeInputPullFilter, 1);s
 		GPIO_ExtIntConfig(gpioPortC, i, i, true, false, true);
 	}*/
 	// turn on Softmute
 	GPIO_PinModeSet(gpioPortA, 1, gpioModePushPull, 1);
-	GPIO_DriveStrengthSet(gpioPortA,gpioDriveStrengthStrongAlternateStrong);
-	GPIO_PinModeSet(gpioPortE, 14, gpioModePushPull, 1);
+	//GPIO_DriveStrengthSet(gpioPortA,gpioDriveStrengthStrongAlternateStrong);
+	GPIO_PinModeSet(gpioPortE, 14, gpioModePushPull, 0);
 	setSoftMute(true);
-	setExtLed(false);
 }
 
 void led()

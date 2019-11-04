@@ -59,7 +59,6 @@ int main(void)
 		SegmentLCD_Write("CON FAIL");
 #endif
 	}
-
 }
 
 void setupCMU(void)

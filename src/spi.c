@@ -32,7 +32,7 @@ void TransferComplete( SPIDRV_Handle_t handle,
 }
 
 void spi_init(void) {
-	SPIDRV_Init_t initData = SPIDRV_MASTER_USART3;
+	SPIDRV_Init_t initData = SPIDRV_MASTER_USART2; //Sett denne til USART3 så blir Karl sur :C (den fucker med GPIO somehow)
 
 	// Initialize a SPI driver instance
 	SPIDRV_Init( handle, &initData );
