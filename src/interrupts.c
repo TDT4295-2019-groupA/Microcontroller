@@ -28,10 +28,13 @@ void __attribute__ ((interrupt)) TIMER1_IRQHandler()
 
 void setupNVIC(void)
 {
-	NVIC_Enable(GPIO_ODD_IRQn);
-	NVIC_Enable(GPIO_EVEN_IRQn);
+	CORE_DECLARE_NVIC_ZEROMASK(mask);
 
-	NVIC_Enable(TIMER1_IRQn);
+	CORE_NvicMaskSetIRQ(GPIO_ODD_IRQn, 	&mask);
+	CORE_NvicMaskSetIRQ(GPIO_EVEN_IRQn,	&mask);
+	CORE_NvicMaskSetIRQ(TIMER1_IRQn,    &mask);
+
+	CORE_NVIC_ENABLE(&mask);
 
 	GPIO_IntClear(GPIO_IntGet());
 }
