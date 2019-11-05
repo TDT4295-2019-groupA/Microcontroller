@@ -18,6 +18,7 @@
 #ifndef __DMACTRL_H
 #define __DMACTRL_H
 
+#define DMA_CHAN_COUNT 12
 /***************************************************************************//**
  * @addtogroup kitdrv
  * @{

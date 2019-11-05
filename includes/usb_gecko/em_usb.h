@@ -504,7 +504,7 @@ SL_PACK_START(1)
 typedef struct {
   uint8_t len;                                  /**< Size of this descriptor in bytes.                 */
   uint8_t type;                                 /**< Constant STRING Descriptor Type.                  */
-  char16_t name[];                              /**< The string encoded with UTF-16LE UNICODE charset. */
+  uint16_t name[];                              /**< The string encoded with UTF-16LE UNICODE charset. */
 } SL_ATTRIBUTE_PACKED USB_StringDescriptor_TypeDef;
 SL_PACK_END()
 
