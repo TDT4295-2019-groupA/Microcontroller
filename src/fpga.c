@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "fpga.h"
+#ifndef DEVICE_SADIE
 #include "segmentlcd.h"
+#endif
 #include "spi.h"
 #include "input.h"
 

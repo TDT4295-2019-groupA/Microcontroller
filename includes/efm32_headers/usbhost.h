@@ -5,7 +5,9 @@
 #include "em_device.h"
 #include "em_cmu.h"
 #include "em_usb.h"
+#ifndef DEVICE_SADIE
 #include "segmentlcd.h"
+#endif
 
 #define USB_OUTPUT_SIZE 4
 typedef struct USB_output{

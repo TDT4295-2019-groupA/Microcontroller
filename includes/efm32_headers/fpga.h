@@ -8,6 +8,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
+#include "defines.h"
 #include "midi.h"
 
 typedef unsigned int    uint;

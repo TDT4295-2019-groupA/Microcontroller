@@ -4,8 +4,10 @@
 #include "gpio.h"
 #include "em_gpio.h"
 #include "em_cmu.h"
+#ifndef DEVICE_SADIE
 #include "bsp.h"
 #include "bsp_trace.h"
+#endif
 #include "input.h"
 
 #ifdef DEVICE_GECKO_STARTER_KIT

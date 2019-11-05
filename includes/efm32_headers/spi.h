@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include "spidrv.h"
+#include "defines.h"
 
 void TransferComplete( SPIDRV_Handle_t handle,
                        Ecode_t transferStatus,

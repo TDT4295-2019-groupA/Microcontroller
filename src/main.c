@@ -24,7 +24,7 @@ int main(void)
 	setupNVIC();
 	spi_init();
 
-	while(!setDone());
+	//while(!setDone());
 
 	#ifndef DEVICE_SADIE
 	SegmentLCD_Init(false);

@@ -1,5 +1,7 @@
 #include "spi.h"
+#ifndef DEVICE_SADIE
 #include "segmentlcd.h"
+#endif
 
 SPIDRV_HandleData_t handleData;
 SPIDRV_Handle_t handle = &handleData;
