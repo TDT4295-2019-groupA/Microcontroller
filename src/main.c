@@ -24,8 +24,7 @@ int main(void)
 	//setupNVIC();
 	spi_init();
 
-	CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
-	CMU_ClockEnable(cmuClock_GPIO, true);
+	while(!setDone());
 
 	#ifndef DEVICE_SADIE
 	SegmentLCD_Init(false);
