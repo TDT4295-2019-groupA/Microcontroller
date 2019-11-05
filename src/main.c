@@ -21,7 +21,7 @@ int main(void)
 	//CHIP_Init();
 	setupCMU();
 	setupGPIO();
-	//setupNVIC();
+	setupNVIC();
 	spi_init();
 
 	while(!setDone());

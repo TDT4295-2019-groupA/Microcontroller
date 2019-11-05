@@ -49,7 +49,7 @@ typedef struct MicrocontrollerGeneratorState {
     bool       enabled;           // whether the sound generator should be generating audio or not
     Instrument instrument;        // the index determining which waveform to use
     NoteIndex  note_index;        // to determine pitch/frequency
-    uint       channel_index;     // to know which pitchwheel to use
+    byte       channel_index;     // to know which pitchwheel to use
     Velocity   velocity;          // to know which pitchwheel to use
 } __attribute__((packed)) MicrocontrollerGeneratorState;
 

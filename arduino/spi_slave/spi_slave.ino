@@ -15,10 +15,12 @@ void setup (void)
   Serial.begin (9600);   // debugging
 
   // turn on SPI in slave mode
-  SPCR |= bit (SPE);
+  SPCR |= _BV(SPE);
 
   // have to send on master in, *slave out*
+  pinMode(SS, INPUT_PULLUP);
   pinMode(MISO, OUTPUT);
+  pinMode(SCK, INPUT);
 
   // get ready for an interrupt
   pos = 0;   // buffer empty
@@ -39,10 +41,15 @@ ISR (SPI_STC_vect)
   // add to buffer if room
   if (pos < (sizeof (buf) - 1))
     buf [pos++] = c;
+  Serial.print(c);
+  Serial.print(" ");
   // example: newline means time to process buffer
-  //Serial.println (c);
-  if (c == '\0')
+  if ((buf[0] == 1 && pos >= 22) || (buf[0] == 2 && pos >= 10)) {
+    Serial.print("\n");
     process_it = true;
+  } else if (buf[0] != 1 && buf[0] != 2 && c == '\0') {
+    process_it = true;
+  }
 
 }  // end of interrupt routine SPI_STC_vect
 
@@ -64,8 +71,8 @@ void loop (void)
       Serial.print('\n');
     } else if (buf[0] == 2) { //generator
       //Serial.println("Generator");
-      snprintf(readable, 500, "generator_index: %6d, reset_note: %1d, enabled: %1d, instruments: %10d, note_index: %3d, channel_index: %3d, velocity: %3d",
-      *(uint16_t*)&buf[1], buf[3], buf[4], *(uint16_t*)&buf[5], buf[9], buf[10], buf[11]);
+      snprintf(readable, 500, "generator_index: %6u, reset_note: %1u, enabled: %1u, instruments: %3u, note_index: %3u, channel_index: %3u, velocity: %3u",
+      *(uint16_t*)&buf[1], buf[3], buf[4], buf[5], buf[6], buf[7], buf[8]);
       Serial.println(readable);
     } else {
       for (uint16_t i = 0; i < 100; i++) {
