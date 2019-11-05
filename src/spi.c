@@ -4,7 +4,7 @@
 SPIDRV_HandleData_t handleData;
 SPIDRV_Handle_t handle = &handleData;
 
-#define SPIDRV_MASTER_USART3                                           \
+#define SPIDRV_MASTER_USART1                                           \
   {                                                                    \
     USART1,                     /* USART port                       */ \
     _USART_ROUTE_LOCATION_LOC1, /* USART pins location number       */ \
@@ -29,7 +29,7 @@ void TransferComplete( SPIDRV_Handle_t handle,
 }
 
 void spi_init(void) {
-	SPIDRV_Init_t initData = SPIDRV_MASTER_USART3;
+	SPIDRV_Init_t initData = SPIDRV_MASTER_USART1;
 
 	// Initialize a SPI driver instance
 	SPIDRV_Init( handle, &initData );
@@ -40,5 +40,5 @@ void spi_transmit(uint8_t* buffer, uint16_t buffer_size)
 {
   // Transmit data using a callback to catch transfer completion.
   // to do blocking transmit instead, use SPIDRV_MTransmitB and remove the callback from the function call
-  SPIDRV_MTransmit( handle, buffer, buffer_size, TransferComplete);
+  SPIDRV_MTransmitB( handle, buffer, buffer_size);
 }
