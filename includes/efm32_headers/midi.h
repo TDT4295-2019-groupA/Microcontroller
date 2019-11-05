@@ -22,12 +22,15 @@ typedef unsigned char byte;
 #define MIDI_AS4 	70
 #define MIDI_B4 	71
 
+/*
 typedef enum Instrument { // we can expand this as much as we want
     SQUARE   = 0,
     TRIANGLE = 1,
     SAWTOOTH = 2,
     SINE     = 3,
 } Instrument;
+*/
+typedef uint8_t Instrument;
 
 typedef struct MIDI_packet_info{
 	byte packet_type;
