@@ -5,36 +5,33 @@
 #include "em_emu.h"
 #include "em_core.h"
 
-void __attribute__ ((interrupt)) GPIO_EVEN_IRQHandler()
+void GPIO_EVEN_IRQHandler()
 {
 	GPIO_IntClear(GPIO_IntGet());
 
-    handleButtons();
+	setExtLed(true);
+    //handleButtons();
 }
 
-void __attribute__ ((interrupt)) GPIO_ODD_IRQHandler()
+void GPIO_ODD_IRQHandler()
 {
     GPIO_IntClear(GPIO_IntGet());
 
-    handleButtons();
+    setExtLed(false);
+    //handleButtons();
 }
 
 
-void __attribute__ ((interrupt)) TIMER1_IRQHandler()
+void TIMER1_IRQHandler()
 {
     // Stuff
 }
 
-
 void setupNVIC(void)
 {
-	CORE_DECLARE_NVIC_ZEROMASK(mask);
-
-	CORE_NvicMaskSetIRQ(GPIO_ODD_IRQn, 	&mask);
-	CORE_NvicMaskSetIRQ(GPIO_EVEN_IRQn,	&mask);
-	CORE_NvicMaskSetIRQ(TIMER1_IRQn,    &mask);
-
-	CORE_NVIC_ENABLE(&mask);
+	NVIC_EnableIRQ(GPIO_ODD_IRQn);
+	NVIC_EnableIRQ(GPIO_EVEN_IRQn);
+	NVIC_EnableIRQ(TIMER1_IRQn);
 
 	GPIO_IntClear(GPIO_IntGet());
 }
