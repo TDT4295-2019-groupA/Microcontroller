@@ -66,6 +66,6 @@ void setupCMU(void)
 	CMU_ClockEnable(cmuClock_GPIO, true);
 	CMU_ClockEnable(cmuClock_TIMER1, true);
 	CMU_ClockEnable(cmuClock_LDMA, true);
-	CMU_ClockEnable(cmuClock_USART1, true);
+	CMU_ClockEnable(cmuClock_USART0, true);
 }
 

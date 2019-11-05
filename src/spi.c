@@ -6,11 +6,14 @@
 SPIDRV_HandleData_t handleData;
 SPIDRV_Handle_t handle = &handleData;
 
-#define SPIDRV_MASTER_USART1                                           \
+#define SPIDRV_MASTER_USART0                                           \
   {                                                                    \
-    USART1,                     /* USART port                       */ \
-    _USART_ROUTE_LOCATION_LOC1, /* USART pins location number       */ \
-    9600,                     /* Bitrate                          */ \
+    USART0,                     /* USART port                       */ \
+    _USART_ROUTELOC0_TXLOC_LOC0, /* USART Tx pin location number    */ \
+    _USART_ROUTELOC0_RXLOC_LOC0, /* USART Rx pin location number    */ \
+    _USART_ROUTELOC0_CLKLOC_LOC0, /* USART Clk pin location number  */ \
+    _USART_ROUTELOC0_CSLOC_LOC0, /* USART Cs pin location number    */ \
+    9600,                    /* Bitrate                          */ \
     8,                          /* Frame length                     */ \
     0,                          /* Dummy Tx value for Rx only funcs */ \
     spidrvMaster,               /* SPI mode                         */ \
@@ -31,7 +34,7 @@ void TransferComplete( SPIDRV_Handle_t handle,
 }
 
 void spi_init(void) {
-	SPIDRV_Init_t initData = SPIDRV_MASTER_USART1;
+	SPIDRV_Init_t initData = SPIDRV_MASTER_USART0;
 
 	// Initialize a SPI driver instance
 	SPIDRV_Init( handle, &initData );
