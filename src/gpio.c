@@ -53,11 +53,21 @@ static bool led_toggle = false; // debug
 void handleButtons()
 {
     for(int i = 0; i < GPIO_BTN_COUNT; i++){
-        button_state[i] = !GPIO_PinInGet(gpio_btn_index_to_port[i], gpio_btn_index_to_pin[i]);
+        button_state[i] = GPIO_PinInGet(gpio_btn_index_to_port[i], gpio_btn_index_to_pin[i]);
     }
     led_toggle = !led_toggle;
     setExtLed(led_toggle);
     handleMultipleButtonPresses();
+}
+
+void pulse_reset() {
+    if (GPIO_PinInGet(gpioPortA, 13)) {
+        GPIO_PinOutSet(gpioPortE, 15); // Arbitrary GPIO pin
+        GPIO_PinOutSet(gpioPortE, 4); // FPGA Soft reset
+    } else {
+        GPIO_PinOutClear(gpioPortE, 15);
+        GPIO_PinOutClear(gpioPortE, 4);
+    }
 }
 
 void setupGPIO(void)
@@ -76,9 +86,9 @@ void setupGPIO(void)
     GPIOINT_CallbackRegister(7, handleButtons);
     GPIOINT_CallbackRegister(8, handleButtons);
     GPIOINT_CallbackRegister(11, handleButtons);
-    GPIOINT_CallbackRegister(12, handleButtons);
-    GPIOINT_CallbackRegister(13, handleButtons);
-    GPIOINT_CallbackRegister(14, handleButtons);
+    GPIOINT_CallbackRegister(12, pulse_reset);
+    GPIOINT_CallbackRegister(13, pulse_reset);
+    GPIOINT_CallbackRegister(14, pulse_reset);
 
 	// turn on Softmute
 	GPIO_PinModeSet(gpioPortA, 1, gpioModePushPull, 1);
@@ -89,7 +99,8 @@ void setupGPIO(void)
 	GPIO_PinModeSet(gpioPortC, 7, gpioModePushPull, 1);
 	GPIO_PinModeSet(gpioPortE, 4, gpioModePushPull, 0);
 	GPIO_PinModeSet(gpioPortE, 14, gpioModePushPull, 0);
-	setSoftMute(true);
+    GPIO_PinModeSet(gpioPortE, 15, gpioModePushPull, 0);
+    setSoftMute(true);
 }
 
 void led()
