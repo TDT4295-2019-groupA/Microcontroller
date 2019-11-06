@@ -1,11 +1,11 @@
 #include <stdbool.h>
 #include "interrupts.h"
-#include "em_gpio.h"
+//#include "em_gpio.h"
 #include "gpio.h"
 #include "em_timer.h"
 #include "em_emu.h"
 #include "em_core.h"
-#include "gpiointerrupt.h"
+//#include "gpiointerrupt.h"
 #include "em_int.h"
 
 /*void GPIO_EVEN_IRQHandler()
@@ -53,5 +53,5 @@ void setupBtnInterrupts(void){
 	GPIOINT_CallbackRegister(12, inthandler);
 	GPIOINT_CallbackRegister(13, inthandler);
 	GPIOINT_CallbackRegister(14, inthandler);
-	GPIO_IntEnable(1<<2 | 1<<3 | 1<<4 | 1<<5 | 1<<6 | 1<<7 | 1<<8 | 1<<11 | 1<<12 | 1<<13 | 1<<14);
+	//GPIO_IntEnable(1<<2 | 1<<3 | 1<<4 | 1<<5 | 1<<6 | 1<<7 | 1<<8 | 1<<11 | 1<<12 | 1<<13 | 1<<14);
 }
