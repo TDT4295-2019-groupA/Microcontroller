@@ -3,6 +3,8 @@
 #include <assert.h>
 #include "gpio.h"
 #include "em_gpio.h"
+#include "gpiointerrupt.h"
+#include "em_int.h"
 #include "em_cmu.h"
 #ifndef DEVICE_SADIE
 #include "bsp.h"
@@ -46,16 +48,38 @@ static unsigned int gpio_btn_index_to_port[] = {
 
 static bool button_state[GPIO_BTN_COUNT] = {0};
 
+static bool led = false;
+
+void handleButtons()
+{
+    for(int i = 0; i < GPIO_BTN_COUNT; i++){
+        button_state[i] = !GPIO_PinInGet(gpio_btn_index_to_port[i], gpio_btn_index_to_pin[i]);
+    }
+    led = !led;
+    setExtLed(led);
+    handleMultipleButtonPresses();
+}
+
 void setupGPIO(void)
 {
-	for(int i = 0; i < GPIO_BTN_COUNT; i++){
+    for(int i = 0; i < GPIO_BTN_COUNT; i++){
 		GPIO_PinModeSet(gpio_btn_index_to_port[i], gpio_btn_index_to_pin[i], gpioModeWiredOrPullDown , 0);
 		GPIO_ExtIntConfig(gpio_btn_index_to_port[i], gpio_btn_index_to_pin[i], gpio_btn_index_to_pin[i], true, true, true);
 	}
-	/*for(unsigned int i=4; i<16; i++) {
-		GPIO_PinModeSet(gpioPortC, i, gpioModeInputPullFilter, 1);
-		GPIO_ExtIntConfig(gpioPortC, i, i, true, false, true);
-	}*/
+
+    GPIOINT_Init();
+    GPIOINT_CallbackRegister(2, handleButtons);
+    GPIOINT_CallbackRegister(3, handleButtons);
+    GPIOINT_CallbackRegister(4, handleButtons);
+    GPIOINT_CallbackRegister(5, handleButtons);
+    GPIOINT_CallbackRegister(6, handleButtons);
+    GPIOINT_CallbackRegister(7, handleButtons);
+    GPIOINT_CallbackRegister(8, handleButtons);
+    GPIOINT_CallbackRegister(11, handleButtons);
+    GPIOINT_CallbackRegister(12, handleButtons);
+    GPIOINT_CallbackRegister(13, handleButtons);
+    GPIOINT_CallbackRegister(14, handleButtons);
+
 	// turn on Softmute
 	GPIO_PinModeSet(gpioPortA, 1, gpioModePushPull, 1);
 	//GPIO_DriveStrengthSet(gpioPortA,gpioDriveStrengthStrongAlternateStrong);
@@ -71,14 +95,6 @@ void setupGPIO(void)
 void led()
 {
 	BSP_LedToggle(0);
-}
-
-void handleButtons()
-{
-	for(int i = 0; i < GPIO_BTN_COUNT; i++){
-		button_state[i] = !GPIO_PinInGet(gpio_btn_index_to_port[i], gpio_btn_index_to_pin[i]);
-	}
-	handleMultipleButtonPresses();
 }
 
 bool isButtonDown(unsigned int index){

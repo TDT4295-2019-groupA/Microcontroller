@@ -23,9 +23,7 @@ int main(void)
 	setupCMU();
 	setupGPIO();
 	setupTimer(1);
-	//setupNVIC();
 	spi_init();
-	setupBtnInterrupts();
 	setExtLed(true);
 	pulse();
 	setExtLed(false);
