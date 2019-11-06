@@ -6,7 +6,7 @@
 #include "usbhost.h"
 #include "gpio.h"
 #include "fpga.h"
-#include "interrupts.h"
+//#include "interrupts.h"
 #include "spi.h"
 #include <stdbool.h>
 
@@ -21,11 +21,12 @@ int main(void)
 	//CHIP_Init();
 	setupCMU();
 	setupGPIO();
-	setupTimer(100);
-	setupNVIC();
+	//setupTimer(100);
+	//setupNVIC();
 	spi_init();
+	setupBtnInterrupts();
 
-	while(!setDone());
+	//while(!setDone());
 
 	#ifndef DEVICE_SADIE
 	SegmentLCD_Init(false);

@@ -50,7 +50,7 @@ void setupGPIO(void)
 {
 	for(int i = 0; i < GPIO_BTN_COUNT; i++){
 		GPIO_PinModeSet(gpio_btn_index_to_port[i], gpio_btn_index_to_pin[i], gpioModeInputPullFilter , 1);
-		GPIO_ExtIntConfig(gpio_btn_index_to_port[i], gpio_btn_index_to_pin[i], gpio_btn_index_to_pin[i], true, true, true);
+		//GPIO_ExtIntConfig(gpio_btn_index_to_port[i], gpio_btn_index_to_pin[i], gpio_btn_index_to_pin[i], true, true, true);
 	}
 	/*for(unsigned int i=4; i<16; i++) {
 		GPIO_PinModeSet(gpioPortC, i, gpioModeInputPullFilter, 1);s
@@ -61,8 +61,8 @@ void setupGPIO(void)
 	//GPIO_DriveStrengthSet(gpioPortA,gpioDriveStrengthStrongAlternateStrong);
 	// fpga_ready
 	GPIO_PinModeSet(gpioPortC, 6, gpioModeInputPullFilter, 1);
-	// fpga_reset
-	GPIO_PinModeSet(gpioPortC, 7, gpioModePushPull, 0);
+	// fpga_resetpNVIC()
+	GPIO_PinModeSet(gpioPortC, 7, gpioModePushPull, 1);
 	GPIO_PinModeSet(gpioPortE, 14, gpioModePushPull, 0);
 	setSoftMute(true);
 }
