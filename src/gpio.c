@@ -48,15 +48,15 @@ static unsigned int gpio_btn_index_to_port[] = {
 
 static bool button_state[GPIO_BTN_COUNT] = {0};
 
-static bool led = false;
+static bool led_toggle = false; // debug
 
 void handleButtons()
 {
     for(int i = 0; i < GPIO_BTN_COUNT; i++){
         button_state[i] = !GPIO_PinInGet(gpio_btn_index_to_port[i], gpio_btn_index_to_pin[i]);
     }
-    led = !led;
-    setExtLed(led);
+    led_toggle = !led_toggle;
+    setExtLed(led_toggle);
     handleMultipleButtonPresses();
 }
 
