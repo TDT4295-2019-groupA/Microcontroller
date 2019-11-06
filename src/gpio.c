@@ -86,9 +86,9 @@ void setupGPIO(void)
     GPIOINT_CallbackRegister(7, handleButtons);
     GPIOINT_CallbackRegister(8, handleButtons);
     GPIOINT_CallbackRegister(11, handleButtons);
-    GPIOINT_CallbackRegister(12, pulse_reset);
+    GPIOINT_CallbackRegister(12, handleButtons);
     GPIOINT_CallbackRegister(13, pulse_reset);
-    GPIOINT_CallbackRegister(14, pulse_reset);
+    GPIOINT_CallbackRegister(14, handleButtons);
 
 	// turn on Softmute
 	GPIO_PinModeSet(gpioPortA, 1, gpioModePushPull, 1);
