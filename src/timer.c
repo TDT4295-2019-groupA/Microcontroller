@@ -28,9 +28,7 @@ void pulse(void)
 	uint32_t top = TIMER_TopGet(TIMER1);
 	GPIO_PinOutSet(gpioPortE, 4);
 	TIMER_Enable(TIMER1, true);
-	while(TIMER_CounterGet(TIMER1)<top) {
-
-	}
+	while(TIMER_CounterGet(TIMER1)<top);
 	GPIO_PinOutClear(gpioPortE, 4);
 	TIMER_Enable(TIMER1, false);
 	TIMER_CounterSet(TIMER1, 0);

@@ -59,6 +59,10 @@ void setupGPIO(void)
 	// turn on Softmute
 	GPIO_PinModeSet(gpioPortA, 1, gpioModePushPull, 1);
 	//GPIO_DriveStrengthSet(gpioPortA,gpioDriveStrengthStrongAlternateStrong);
+	// fpga_ready
+	GPIO_PinModeSet(gpioPortC, 6, gpioModeInputPullFilter, 1);
+	// fpga_reset
+	GPIO_PinModeSet(gpioPortC, 7, gpioModePushPull, 0);
 	GPIO_PinModeSet(gpioPortE, 14, gpioModePushPull, 0);
 	setSoftMute(true);
 }
