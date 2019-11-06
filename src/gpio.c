@@ -24,7 +24,7 @@ static unsigned int gpio_btn_index_to_port[] = {
 
 #ifdef DEVICE_SADIE
 static unsigned int gpio_btn_index_to_pin[] = {
-	2, 3, 4, 5, 5, 6, 4, 5, 7, 8, 12, 13, 14, 11
+	2, 3, 4, 5, 3, 4, 5, 6, 4, 5, 7, 8, 12, 13, 14, 11
 };
 static unsigned int gpio_btn_index_to_port[] = {
 	gpioPortA,	//0
