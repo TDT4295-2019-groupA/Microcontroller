@@ -6,7 +6,8 @@
 #include "usbhost.h"
 #include "gpio.h"
 #include "fpga.h"
-#include "interrupts.h"
+#include "em_chip.h"
+//#include "interrupts.h"
 #include "spi.h"
 #include <stdbool.h>
 
@@ -18,12 +19,14 @@ void setupCMU(void);
 
 int main(void)
 {
-	//CHIP_Init();
+	CHIP_Init();
 	setupCMU();
 	setupGPIO();
-	setupTimer(100);
-	setupNVIC();
+	setupTimer(1);
 	spi_init();
+	setExtLed(true);
+	pulse();
+	setExtLed(false);
 
 	while(!setDone());
 
@@ -44,6 +47,7 @@ int main(void)
 #endif
 
 		while(USBIsConnected()){
+			setExtLed(true);
 			MIDI_packet input = waitForInput();
 			// TODO: do stuff with input
 			handleMIDIEvent(&input, generator_states);
@@ -65,7 +69,7 @@ void setupCMU(void)
 {
 	CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
 	CMU_ClockEnable(cmuClock_GPIO, true);
-	CMU_ClockEnable(cmuClock_TIMER1, true);
+	CMU_ClockEnable(cmuClock_WTIMER1, true);
 	CMU_ClockEnable(cmuClock_LDMA, true);
 	CMU_ClockEnable(cmuClock_USART0, true);
 }
