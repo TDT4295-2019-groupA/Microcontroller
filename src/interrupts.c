@@ -22,16 +22,12 @@ void GPIO_ODD_IRQHandler()
 }
 
 
-void TIMER1_IRQHandler()
-{
-    // Stuff
-}
 
 void setupNVIC(void)
 {
 	NVIC_EnableIRQ(GPIO_ODD_IRQn);
 	NVIC_EnableIRQ(GPIO_EVEN_IRQn);
-	NVIC_EnableIRQ(TIMER1_IRQn);
+	//NVIC_EnableIRQ(TIMER1_IRQn);
 
 	GPIO_IntClear(GPIO_IntGet());
 }

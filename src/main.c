@@ -21,10 +21,11 @@ int main(void)
 	//CHIP_Init();
 	setupCMU();
 	setupGPIO();
+	setupTimer(100);
 	setupNVIC();
 	spi_init();
 
-	//while(!setDone());
+	while(!setDone());
 
 	#ifndef DEVICE_SADIE
 	SegmentLCD_Init(false);

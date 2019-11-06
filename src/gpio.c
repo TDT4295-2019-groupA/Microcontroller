@@ -100,13 +100,3 @@ void setExtLed(bool high){
 	}
 }
 
-bool setDone(void) {
-	unsigned int flashed = GPIO_PinInGet(gpioPortC, 6);
-	if(flashed == 1) {
-		GPIO_PinOutSet(gpioPortE, 4);
-		GPIO_PinOutClear(gpioPortE, 4);
-		return true;
-	} else {
-		return false;
-	}
-}

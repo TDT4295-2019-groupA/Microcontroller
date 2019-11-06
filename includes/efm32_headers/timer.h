@@ -8,5 +8,7 @@
 #include "em_timer.h"
 
 void setupTimer(uint16_t delay);
+void pulse(void);
+bool setDone(void);
 
 #endif /* HEADERS_TIMER_H_ */
