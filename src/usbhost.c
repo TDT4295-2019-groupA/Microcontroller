@@ -52,7 +52,7 @@ unsigned char *USBWaitForData(){
 	unsigned char* ptr = readbuffer;
 	USBH_ReadB(device.ep, ptr, USB_OUTPUT_SIZE, 0);
 	int count = 1;
-	while(ting && (ptr < 16)) {
+	while(ting && (count < 16)) {
 		ptr += USB_OUTPUT_SIZE*sizeof(unsigned char);
 		count += 1;
 		if(USBH_ReadB(device.ep, ptr, USB_OUTPUT_SIZE, 10) < 0) {
