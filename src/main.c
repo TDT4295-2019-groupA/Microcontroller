@@ -48,9 +48,12 @@ int main(void)
 
 		while(USBIsConnected()){
 			setExtLed(true);
-			MIDI_packet input = waitForInput();
+			unsigned char *input = USBWaitForData();
 			// TODO: do stuff with input
-			handleMIDIEvent(&input, generator_states);
+			while(input[1] != 0) {
+				handleMIDIEvent(convertToMidi(input), generator_states);
+				input += (USB_OUTPUT_SIZE*sizeof(unsigned char));
+			}
 		}
 		// Connection removed
 #ifndef DEVICE_SADIE

@@ -87,6 +87,14 @@ MIDI_packet waitForInput(){
 	return midi_out;
 }
 
+MIDI_packet *convertToMidi(unsigned char *usbpacket){
+	MIDI_packet midi_out;
+	midi_out.data[0] = usbpacket[1];
+	midi_out.data[1] = usbpacket[2];
+	midi_out.data[2] = usbpacket[3];
+	return &midi_out;
+}
+
 void handleMultipleButtonPresses(MicrocontrollerGeneratorState** generator_states){
 	for(int i = 0; i < GPIO_BTN_COUNT; i++){
 		if(last_button_state[i] != isButtonDown(i)){
