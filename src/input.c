@@ -78,6 +78,7 @@ static int octave_shift_max = 3;
 // Yes this is ugly thank you
 static int button_is_on_keyboard[GPIO_BTN_COUNT] = {1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0};
 
+/*
 MIDI_packet waitForInput(){
 	USB_output usb_out = USBWaitForData();
 	MIDI_packet midi_out;
@@ -86,13 +87,14 @@ MIDI_packet waitForInput(){
 	midi_out.data[2] = usb_out.data[3];
 	return midi_out;
 }
+*/
 
-MIDI_packet *convertToMidi(unsigned char *usbpacket){
+MIDI_packet convertToMidi(unsigned char *usbpacket){
 	MIDI_packet midi_out;
 	midi_out.data[0] = usbpacket[1];
 	midi_out.data[1] = usbpacket[2];
 	midi_out.data[2] = usbpacket[3];
-	return &midi_out;
+	return midi_out;
 }
 
 void handleMultipleButtonPresses(MicrocontrollerGeneratorState** generator_states){

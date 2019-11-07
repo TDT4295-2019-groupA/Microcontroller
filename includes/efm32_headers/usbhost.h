@@ -16,6 +16,6 @@ typedef struct USB_output{
 
 bool USBConnect(void);
 bool USBIsConnected();
-USB_output USBWaitForData();
+unsigned char *USBWaitForData();
 
 #endif /* HEADERS_USBHOST_H_ */

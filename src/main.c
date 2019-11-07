@@ -7,8 +7,10 @@
 #include "gpio.h"
 #include "fpga.h"
 #include "em_chip.h"
+#include "timer.h"
 //#include "interrupts.h"
 #include "spi.h"
+#include "midi.h"
 #include <stdbool.h>
 
 #ifndef DEVICE_SADIE
@@ -49,9 +51,9 @@ int main(void)
 		while(USBIsConnected()){
 			setExtLed(true);
 			unsigned char *input = USBWaitForData();
-			// TODO: do stuff with input
 			while(input[1] != 0) {
-				handleMIDIEvent(convertToMidi(input), generator_states);
+				MIDI_packet midi = convertToMidi(input);
+				handleMIDIEvent(&midi, generator_states);
 				input += (USB_OUTPUT_SIZE*sizeof(unsigned char));
 			}
 		}
