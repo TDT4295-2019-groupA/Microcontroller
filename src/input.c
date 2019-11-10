@@ -18,9 +18,16 @@ int octaveShiftValue = 0;
 int MIDI_channelValue = 0;
 
 int instrumentValue = 0;
+int velocityValue = 0;
+
+uint16_t ms_counter = 0;
 
 int getInstrumentValue(){
 	return instrumentValue;
+}
+
+int getVelocityValue(){
+	return velocityValue;
 }
 
 //MIDI control package, standar for bytte av instrument, 0-127 valg. alt på channel 1 (0) for øyeblikket
@@ -85,6 +92,46 @@ MIDI_packet waitForInput(){
 	midi_out.data[1] = usb_out.data[2];
 	midi_out.data[2] = usb_out.data[3];
 	return midi_out;
+}
+
+void handleAnalogWheel(){
+		uint16_t adc_result = 0; // Temp variable for storing ADC conversion results
+		uint32_t temp;
+
+		// Setup ADC
+		// Timebase bit field = 24, defines ADC warm up period (must be greater than or equal to number of clock cycles in 1us)
+		// Prescaler setting = 1: ADC clock = HFPERCLK/2 = 12MHz (ADC clock should be between 32kHz and 13MHz)
+		// Oversampling set to 2, no input filter, no need for Conversion Tailgating
+		// Warm-up mode = NORMAL (ADC is not kept warmed up between conversions)
+		ADC0->CTRL = (24 << 16) | (1 << 8);
+
+		// Can use single-cycle acquisition time since we are spacing out our conversions using a timer
+		// Use buffered Vdd as reference, use Channel 6 as input to single conversion
+		// 12-bit resolution, right-justified, single-ended input, single conversion
+		//Might have to change (4 << 8) to (6 << 8)
+		ADC0->SINGLECTRL = (2 << 16) | (4 << 8);
+		ADC0->IEN = 0x0; // Disable ADC interrupts
+
+		// Setup Timer to trigger conversions
+		TIMER0->TOP = 24000;							// Set TOP value for Timer0
+		TIMER0->IEN = 1;								// Enable Timer0 overflow interrupt
+		NVIC_EnableIRQ(TIMER0_IRQn);					// Enable TIMER0 interrupt vector in NVIC
+		TIMER0->CMD = 0x1;								// Start timer0
+
+		while(1) {
+			if(ms_counter == 500) {
+
+				ADC0->CMD = 0x1;						// Start Single Conversion
+				while(!(ADC0->STATUS & (1 << 16)));		// Wait for single conversion data to become valid
+				adc_result = ADC0->SINGLEDATA;			// Store conversion result
+
+				// Change hex result to decimal result in V
+				temp = adc_result*3300;
+				adc_result = temp/4095;
+				velocityValue = ((adc_result/1000)*38)+1;
+				ms_counter = 0; // reset counter
+			}
+		  }
 }
 
 void handleMultipleButtonPresses(MicrocontrollerGeneratorState** generator_states){

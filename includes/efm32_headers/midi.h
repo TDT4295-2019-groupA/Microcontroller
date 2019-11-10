@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 
 typedef unsigned char byte;
 #define N_MIDI_KEYS     128
