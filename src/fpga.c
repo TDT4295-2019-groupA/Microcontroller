@@ -67,7 +67,7 @@ void update_generator_state(MicrocontrollerGeneratorState* generator_state, bool
 	generator_state->enabled = enabled;
 	generator_state->note_index = note_index;
 	generator_state->channel_index = channel_index;
-	generator_state->velocity = velocity;
+	generator_state->velocity = getVelocityValue();
 	generator_state->instrument = getInstrumentValue();
 }
 

@@ -63,6 +63,10 @@ int main(void)
 		SegmentLCD_Write("CON FAIL");
 #endif
 	}
+	//TODO: place this in a more appropriate place.
+	while(1){
+		handleAnalogWheel();
+	}
 }
 
 void setupCMU(void)
