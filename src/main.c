@@ -9,6 +9,7 @@
 #include "em_chip.h"
 #include "timer.h"
 //#include "interrupts.h"
+#include "buffer.h"
 #include "spi.h"
 #include "midi.h"
 #include <stdbool.h>
@@ -50,11 +51,11 @@ int main(void)
 
 		while(USBIsConnected()){
 			setExtLed(true);
-			unsigned char *input = USBWaitForData();
-			while(input[1] != 0) {
-				MIDI_packet midi = convertToMidi(input);
+			cbuf *input = USBWaitForData();
+			if(!isEmpty(input)) {
+				MIDI_packet midi = convertToMidi(input->buf + input->tail);
 				handleMIDIEvent(&midi, generator_states);
-				input += (USB_OUTPUT_SIZE*sizeof(unsigned char));
+				advanceTail(input);
 			}
 		}
 		// Connection removed

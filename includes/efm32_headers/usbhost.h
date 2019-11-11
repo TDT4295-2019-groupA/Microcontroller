@@ -5,6 +5,7 @@
 #include "em_device.h"
 #include "em_cmu.h"
 #include "em_usb.h"
+#include "buffer.h"
 #ifndef DEVICE_SADIE
 #include "segmentlcd.h"
 #endif
@@ -16,6 +17,6 @@ typedef struct USB_output{
 
 bool USBConnect(void);
 bool USBIsConnected();
-unsigned char *USBWaitForData();
+cbuf *USBWaitForData();
 
 #endif /* HEADERS_USBHOST_H_ */

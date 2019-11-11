@@ -1,5 +1,6 @@
 #include "defines.h"
 #include "usbhost.h"
+#include "buffer.h"
 
 STATIC_UBUF(tmpBuf, 1024);
 static USBH_Device_TypeDef device;
@@ -7,7 +8,9 @@ static USBH_Ep_TypeDef ep[1];
 static USB_EndpointDescriptor_TypeDef *retval;
 static USB_EndpointDescriptor_TypeDef checker;
 
-static unsigned char readbuffer[16 * USB_OUTPUT_SIZE] = {0};
+static unsigned char buf[READBUFFER_SIZE * USB_OUTPUT_SIZE] = {0}; //må være en power av 2
+static cbuf readbuffer = {.buf=buf, .full=false, .head=0, .tail=0};
+
 
 bool USBConnect()
 {
@@ -46,18 +49,20 @@ bool USBIsConnected(){
 	return USBH_DeviceConnected();
 }
 
-unsigned char *USBWaitForData(){
-	memset(readbuffer, 0, sizeof(readbuffer));
+cbuf *USBWaitForData(){
 	bool ting = true;
-	unsigned char* ptr = readbuffer;
-	USBH_ReadB(device.ep, ptr, USB_OUTPUT_SIZE, 0);
-	int count = 1;
-	while(ting && (count < 16)) {
-		ptr += USB_OUTPUT_SIZE*sizeof(unsigned char);
-		count += 1;
-		if(USBH_ReadB(device.ep, ptr, USB_OUTPUT_SIZE, 10) < 0) {
+	unsigned char* ptr;
+	int count = 0;
+	while(ting && (count < READBUFFER_SIZE)) {
+		ptr = readbuffer.buf + readbuffer.head;
+		if(USBH_ReadB(device.ep, ptr, USB_OUTPUT_SIZE, 0) < 0) {
 			ting = false;
+		} else if(isFull(&readbuffer)){
+			ting = false;
+		} else {
+			advanceHead(&readbuffer);
+			count++;
 		}
 	}
-	return readbuffer;
+	return &readbuffer;
 }
