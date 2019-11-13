@@ -147,6 +147,9 @@ void setupGPIO(void)
 	// fpga_resetpNVIC()
 	GPIO_PinModeSet(gpioPortC, 7, gpioModePushPull, 1);
 	GPIO_PinModeSet(gpioPortE, 4, gpioModePushPull, 0);
+	if (OUTPUT_CLOCK) {
+        GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
+    }
 	GPIO_PinModeSet(gpioPortE, 14, gpioModePushPull, 0);
     GPIO_PinModeSet(gpioPortE, 15, gpioModePushPull, 0);
     setSoftMute(true);
