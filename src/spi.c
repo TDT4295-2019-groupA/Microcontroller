@@ -13,7 +13,24 @@ SPIDRV_Handle_t handle = &handleData;
     _USART_ROUTELOC0_RXLOC_LOC0, /* USART Rx pin location number    */ \
     _USART_ROUTELOC0_CLKLOC_LOC0, /* USART Clk pin location number  */ \
     _USART_ROUTELOC0_CSLOC_LOC0, /* USART Cs pin location number    */ \
-    9600,                    /* Bitrate                          */ \
+    100000,                    /* Bitrate                          */ \
+    8,                          /* Frame length                     */ \
+    0,                          /* Dummy Tx value for Rx only funcs */ \
+    spidrvMaster,               /* SPI mode                         */ \
+    spidrvBitOrderMsbFirst,     /* Bit order on bus                 */ \
+    spidrvClockMode0,           /* SPI clock/phase mode             */ \
+    spidrvCsControlAuto,        /* CS controlled by the driver      */ \
+    spidrvSlaveStartImmediate   /* Slave start transfers immediately*/ \
+  }
+
+#define SPIDRV_MASTER_USART1                                           \
+  {                                                                    \
+    USART1,                     /* USART port                       */ \
+    _USART_ROUTELOC0_TXLOC_LOC1, /* USART Tx pin location number   */ \
+    _USART_ROUTELOC0_RXLOC_LOC1, /* USART Rx pin location number   */ \
+    _USART_ROUTELOC0_CLKLOC_LOC1,/* USART Clk pin location number  */ \
+    _USART_ROUTELOC0_CSLOC_LOC1, /* USART Cs pin location number   */ \
+    100000,                       /* Bitrate                          */ \
     8,                          /* Frame length                     */ \
     0,                          /* Dummy Tx value for Rx only funcs */ \
     spidrvMaster,               /* SPI mode                         */ \
@@ -34,7 +51,7 @@ void TransferComplete( SPIDRV_Handle_t handle,
 }
 
 void spi_init(void) {
-	SPIDRV_Init_t initData = SPIDRV_MASTER_USART0;
+	SPIDRV_Init_t initData = SPIDRV_MASTER_USART1;
 
 	// Initialize a SPI driver instance
 	SPIDRV_Init( handle, &initData );
@@ -44,6 +61,6 @@ void spi_init(void) {
 void spi_transmit(uint8_t* buffer, uint16_t buffer_size)
 {
   // Transmit data using a callback to catch transfer completion.
-  // to do blocking transmit instead, use SPIDRV_MTransmitB and remove the callback from the function call
+  // to do nonblocking transmit instead, use SPIDRV_MTransmit and add the callback to the function call
   SPIDRV_MTransmitB( handle, buffer, buffer_size);
 }
