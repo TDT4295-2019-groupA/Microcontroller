@@ -24,10 +24,10 @@ static unsigned int gpio_btn_index_to_port[] = {
 
 #ifdef DEVICE_SADIE
 static unsigned int gpio_btn_index_to_pin[] = {
-	2, //0
-	3, //1
-	4, //2
-	5, //3
+	// 2, //0
+	//3, //1
+	// 4, //2
+	//5, //3
 	3, //4
 	4, //5
 	5, //6
@@ -42,10 +42,10 @@ static unsigned int gpio_btn_index_to_pin[] = {
 	11 //5
 };
 static unsigned int gpio_btn_index_to_port[] = {
-	gpioPortA,	//0
-	gpioPortA,	//1
-	gpioPortA,	//2
-	gpioPortA,	//3
+	// gpioPortA,	//0
+	// gpioPortA,	//1
+	// gpioPortA,	//2
+	// gpioPortA,	//3
 	gpioPortB,	//4
 	gpioPortB,	//5
 	gpioPortB,	//6
@@ -60,10 +60,10 @@ static unsigned int gpio_btn_index_to_port[] = {
 	gpioPortB	//15
 };
 static unsigned int gpio_btn_index_to_int[] = {
-	2, //0 = SW13
-	0, //1 = SW1
-	30, //2 = SW2 :(
-	30, //3 = SW3 :(
+	// 2, //0 = SW13
+	// 0, //1 = SW1
+	// 30, //2 = SW2 :(
+	// 30, //3 = SW3 :(
 	3, //4 = SW4
 	30,//5 = SW5 :(
 	30,//6 = SW6 :(
@@ -140,7 +140,7 @@ void setupGPIO(void)
     //GPIOINT_CallbackRegister(15, handleButtons);
 
 	// turn on Softmute
-	GPIO_PinModeSet(gpioPortA, 1, gpioModePushPull, 1);
+	// GPIO_PinModeSet(gpioPortA, 1, gpioModePushPull, 1);
 	//GPIO_DriveStrengthSet(gpioPortA,gpioDriveStrengthStrongAlternateStrong);
 	// fpga_ready
 	GPIO_PinModeSet(gpioPortC, 6, gpioModeWiredOrPullDown, 0);
