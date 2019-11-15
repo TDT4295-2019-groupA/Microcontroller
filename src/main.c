@@ -77,7 +77,8 @@ void setupCMU(void)
         CMU->ROUTEPEN = CMU->ROUTEPEN | CMU_ROUTEPEN_CLKOUT1PEN;  // Enable CMU_CLK1 out pin
         CMU->ROUTELOC0 = CMU->ROUTELOC0 | CMU_ROUTELOC0_CLKOUT1LOC_LOC2;  // Route CMU_CLK1 out of loc2 (PE12 on SADIE)
     } else {
-        CMU_ClockEnable(cmuClock_USART0, true);
-	}
+        //CMU_ClockEnable(cmuClock_USART0, true);
+        CMU_ClockEnable(cmuClock_USART1, true);
+    }
 }
 

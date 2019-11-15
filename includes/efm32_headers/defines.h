@@ -10,6 +10,6 @@
 
 //#define DEVICE_GECKO_STARTER_KIT
 #define DEVICE_SADIE
-#define OUTPUT_CLOCK 1  // This disables UART0!
+#define OUTPUT_CLOCK 0  // Enabling this disables UART0 and clocks down the MCU to 16MHz!
 
 #endif /* INCLUDES_EFM32_HEADERS_DEFINES_H_ */
