@@ -71,9 +71,9 @@ void loop (void)
       Serial.print('\n');
     } else if (buf[0] == 2) { //generator
       //Serial.println("Generator");
-      snprintf(readable, 500, "generator_index: %6u, reset_note: %1u, enabled: %1u, instruments: %3u, note_index: %3u, channel_index: %3u, velocity: %3u",
-      *(uint16_t*)&buf[1], buf[3], buf[4], buf[5], buf[6], buf[7], buf[8]);
-      Serial.println(readable);
+      // snprintf(readable, 500, "generator_index: %6u, reset_note: %1u, enabled: %1u, instruments: %3u, note_index: %3u, channel_index: %3u, velocity: %3u",
+      // *(uint16_t*)&buf[1], buf[3], buf[4], buf[5], buf[6], buf[7], buf[8]);
+      // Serial.println(readable);
     } else {
       for (uint16_t i = 0; i < 100; i++) {
           Serial.print(buf[i], HEX);
