@@ -16,7 +16,7 @@ SPIDRV_Handle_t handle = &handleData;
     _USART_ROUTELOC0_RXLOC_LOC0, /* USART Rx pin location number    */ \
     _USART_ROUTELOC0_CLKLOC_LOC0, /* USART Clk pin location number  */ \
     _USART_ROUTELOC0_CSLOC_LOC0, /* USART Cs pin location number    */ \
-    100000,                    /* Bitrate                          */ \
+    SPI_BITRATE,                    /* Bitrate                          */ \
     8,                          /* Frame length                     */ \
     0,                          /* Dummy Tx value for Rx only funcs */ \
     spidrvMaster,               /* SPI mode                         */ \
@@ -25,7 +25,8 @@ SPIDRV_Handle_t handle = &handleData;
     spidrvCsControlAuto,        /* CS controlled by the driver      */ \
     spidrvSlaveStartImmediate   /* Slave start transfers immediately*/ \
   }
-#else
+#endif
+#ifdef SPI_FPGA
 #undef SPIDRV_MASTER_USART1
 #define SPIDRV_MASTER_USART1                                           \
   {                                                                    \
@@ -34,7 +35,7 @@ SPIDRV_Handle_t handle = &handleData;
     _USART_ROUTELOC0_RXLOC_LOC1, /* USART Rx pin location number   */ \
     _USART_ROUTELOC0_CLKLOC_LOC1,/* USART Clk pin location number  */ \
     _USART_ROUTELOC0_CSLOC_LOC1, /* USART Cs pin location number   */ \
-    100000,                       /* Bitrate                          */ \
+    SPI_BITRATE,                       /* Bitrate                          */ \
     8,                          /* Frame length                     */ \
     0,                          /* Dummy Tx value for Rx only funcs */ \
     spidrvMaster,               /* SPI mode                         */ \
@@ -58,7 +59,8 @@ void TransferComplete( SPIDRV_Handle_t handle,
 void spi_init(void) {
 #ifdef SPI_GPIO
 	SPIDRV_Init_t initData = SPIDRV_MASTER_USART0;
-#else
+#endif
+#ifdef SPI_FPGA
 	SPIDRV_Init_t initData = SPIDRV_MASTER_USART1;
 #endif
 	// Initialize a SPI driver instance

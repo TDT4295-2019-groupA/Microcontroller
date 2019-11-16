@@ -80,7 +80,8 @@ void setupCMU(void)
     } else {
 #ifdef SPI_GPIO
         CMU_ClockEnable(cmuClock_USART0, true);
-#else
+#endif
+#ifdef SPI_FPGA
         CMU_ClockEnable(cmuClock_USART1, true);
 #endif
     }
