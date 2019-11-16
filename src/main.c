@@ -3,6 +3,7 @@
 #include "em_device.h"
 #include "em_cmu.h"
 #include "input.h"
+#include "timer.h"
 #include "usbhost.h"
 #include "gpio.h"
 #include "fpga.h"
@@ -77,8 +78,11 @@ void setupCMU(void)
         CMU->ROUTEPEN = CMU->ROUTEPEN | CMU_ROUTEPEN_CLKOUT1PEN;  // Enable CMU_CLK1 out pin
         CMU->ROUTELOC0 = CMU->ROUTELOC0 | CMU_ROUTELOC0_CLKOUT1LOC_LOC2;  // Route CMU_CLK1 out of loc2 (PE12 on SADIE)
     } else {
-        //CMU_ClockEnable(cmuClock_USART0, true);
+#ifdef SPI_GPIO
+        CMU_ClockEnable(cmuClock_USART0, true);
+#else
         CMU_ClockEnable(cmuClock_USART1, true);
+#endif
     }
 }
 

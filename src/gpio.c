@@ -152,7 +152,6 @@ void setupGPIO(void)
     }
 	GPIO_PinModeSet(gpioPortE, 14, gpioModePushPull, 0);
     GPIO_PinModeSet(gpioPortE, 15, gpioModePushPull, 0);
-    setSoftMute(true);
 }
 
 void led()

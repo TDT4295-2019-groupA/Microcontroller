@@ -6,6 +6,9 @@
 SPIDRV_HandleData_t handleData;
 SPIDRV_Handle_t handle = &handleData;
 
+#ifdef SPI_GPIO
+#undef SPIDRV_MASTER_USART0
+
 #define SPIDRV_MASTER_USART0                                           \
   {                                                                    \
     USART0,                     /* USART port                       */ \
@@ -22,7 +25,8 @@ SPIDRV_Handle_t handle = &handleData;
     spidrvCsControlAuto,        /* CS controlled by the driver      */ \
     spidrvSlaveStartImmediate   /* Slave start transfers immediately*/ \
   }
-
+#else
+#undef SPIDRV_MASTER_USART1
 #define SPIDRV_MASTER_USART1                                           \
   {                                                                    \
     USART1,                     /* USART port                       */ \
@@ -39,6 +43,7 @@ SPIDRV_Handle_t handle = &handleData;
     spidrvCsControlAuto,        /* CS controlled by the driver      */ \
     spidrvSlaveStartImmediate   /* Slave start transfers immediately*/ \
   }
+#endif
 
 void TransferComplete( SPIDRV_Handle_t handle,
                        Ecode_t transferStatus,
@@ -51,8 +56,11 @@ void TransferComplete( SPIDRV_Handle_t handle,
 }
 
 void spi_init(void) {
+#ifdef SPI_GPIO
+	SPIDRV_Init_t initData = SPIDRV_MASTER_USART0;
+#else
 	SPIDRV_Init_t initData = SPIDRV_MASTER_USART1;
-
+#endif
 	// Initialize a SPI driver instance
 	SPIDRV_Init( handle, &initData );
 }

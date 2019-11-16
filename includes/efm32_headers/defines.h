@@ -11,5 +11,6 @@
 //#define DEVICE_GECKO_STARTER_KIT
 #define DEVICE_SADIE
 #define OUTPUT_CLOCK 0  // Enabling this disables UART0 and clocks down the MCU to 16MHz!
+#define SPI_GPIO 1 // Enabling this outputs SPI on GPIO pins instead of directly to the FPGA.
 
 #endif /* INCLUDES_EFM32_HEADERS_DEFINES_H_ */
