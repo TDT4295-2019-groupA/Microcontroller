@@ -35,10 +35,10 @@ static MIDI_cntrl_packet instruments[6] = {
 
 static bool last_button_state[GPIO_BTN_COUNT] = {0};
 static MIDI_packet keydown_to_midi[GPIO_BTN_COUNT] = {
-		{{0x90, MIDI_D4, 	0x7f}}, // 1 -> D
-		{{0x90, MIDI_E4, 	0x7f}}, // 2 -> E
-		{{0x90, MIDI_F4, 	0x7f}}, // 3 -> F
-		{{0x90, MIDI_G4, 	0x7f}}, // 4 -> G
+		// {{0x90, MIDI_D4, 	0x7f}}, // 1 -> D
+		// {{0x90, MIDI_E4, 	0x7f}}, // 2 -> E
+		// {{0x90, MIDI_F4, 	0x7f}}, // 3 -> F
+		// {{0x90, MIDI_G4, 	0x7f}}, // 4 -> G
 		{{0x90, MIDI_A4, 	0x7f}}, // 5 -> A
 		{{0x90, MIDI_B4, 	0x7f}}, // 6 -> B
 		{{0x00, 0x00, 		0x00}}, // 7 -> NO
@@ -53,10 +53,10 @@ static MIDI_packet keydown_to_midi[GPIO_BTN_COUNT] = {
 		{{0x00, 0x00, 		0x00}}  // 16 -> NO
 };
 static MIDI_packet keyup_to_midi[GPIO_BTN_COUNT] = {
-		{{0x80, MIDI_D4, 	0x00}}, // 1 -> D
-		{{0x80, MIDI_E4, 	0x00}}, // 2 -> E
-		{{0x80, MIDI_F4, 	0x00}}, // 3 -> F
-		{{0x80, MIDI_G4, 	0x00}}, // 4 -> G
+		// {{0x80, MIDI_D4, 	0x00}}, // 1 -> D
+		// {{0x80, MIDI_E4, 	0x00}}, // 2 -> E
+		// {{0x80, MIDI_F4, 	0x00}}, // 3 -> F
+		// {{0x80, MIDI_G4, 	0x00}}, // 4 -> G
 		{{0x80, MIDI_A4, 	0x00}}, // 5 -> A
 		{{0x80, MIDI_B4, 	0x00}}, // 6 -> B
 		{{0x00, 0x00, 		0x00}}, // 7 -> NO
