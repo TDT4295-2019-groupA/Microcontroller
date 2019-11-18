@@ -100,10 +100,7 @@ void handleMultipleButtonPresses(MicrocontrollerGeneratorState** generator_state
 
 				// Change octave of packet
 				packet_to_send.data[1] += octave_shift * NOTES_IN_OCTAVE;
-
-                while (true) {
-                    handleMIDIEvent(&packet_to_send, generator_states);
-                }
+                handleMIDIEvent(&packet_to_send, generator_states);
 			}
 			else{ // Handle buttonmenu events
 				if(isButtonDown(i)){

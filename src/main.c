@@ -47,12 +47,11 @@ int main(void)
 		SegmentLCD_Write("CONNECT");
 #endif
 
-		while(USBIsConnected()){
-			setExtLed(true);
-			MIDI_packet input = waitForInput();
-			// TODO: do stuff with input
-			handleMIDIEvent(&input, generator_states);
-		}
+		while(USBIsConnected()) {
+            setExtLed(true);
+            MIDI_packet input = waitForInput();
+            handleMIDIEvent(&input, generator_states);
+        }
 		// Connection removed
 #ifndef DEVICE_SADIE
 		SegmentLCD_Write("CON REM");
