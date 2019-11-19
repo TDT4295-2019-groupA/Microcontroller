@@ -140,7 +140,8 @@ void microcontroller_send_global_state_update(const MicrocontrollerGlobalState* 
 
 	data[sizeof(data)/sizeof(byte)-1] = '\0'; // so my arduino is happy. remove it when connecting to the fpga. TODO
 
-	spi_transmit((byte*)data, sizeof(data));
+	// spi_transmit((byte*)data, sizeof(data));
+	spi_transmit((byte*)data, sizeof(data)-1);
 }
 
 void microcontroller_send_generator_update(ushort generator_index, bool reset_note_lifetime, const MicrocontrollerGeneratorState** generator_states)
@@ -161,7 +162,8 @@ void microcontroller_send_generator_update(ushort generator_index, bool reset_no
 	const MicrocontrollerGeneratorState* blah = generator_states[generator_index];
 	snprintf(output, 29, "index: %6d, velocity: %3d", blah->channel_index, blah->velocity);
 
-	spi_transmit((byte*)data, sizeof(data));
+	// spi_transmit((byte*)data, sizeof(data));
+	spi_transmit((byte*)data, sizeof(data)-1);
 }
 
 // TODO write code to free these structs, or else we will all suffer

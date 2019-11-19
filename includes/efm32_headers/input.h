@@ -19,7 +19,8 @@
 bool connectToInput();
 bool inputConnected();
 int getInstrumentValue();
-MIDI_packet waitForInput();
+//MIDI_packet waitForInput();
+MIDI_packet convertToMidi(unsigned char *usbpacket);
 void handleMultipleButtonPresses();
 
 #endif /* INCLUDES_EFM32_HEADERS_INPUT_H_ */

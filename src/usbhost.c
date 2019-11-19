@@ -6,7 +6,7 @@ static USBH_Ep_TypeDef ep[1];
 static USB_EndpointDescriptor_TypeDef *retval;
 static USB_EndpointDescriptor_TypeDef checker;
 
-static unsigned char readbuffer[4 * USB_OUTPUT_SIZE] = {0};
+static unsigned char readbuffer[16 * USB_OUTPUT_SIZE] = {0};
 
 bool USBConnect()
 {
@@ -40,14 +40,18 @@ bool USBIsConnected(){
 	return USBH_DeviceConnected();
 }
 
-USB_output USBWaitForData(){
-	readbuffer[0] = 0;
-	while(readbuffer[0] == 0){ // Nullertull
-		USBH_ReadB(device.ep, readbuffer, USB_OUTPUT_SIZE, 0);
+unsigned char *USBWaitForData(){
+	memset(readbuffer, 0, sizeof(readbuffer));
+	bool ting = true;
+	unsigned char* ptr = readbuffer;
+	USBH_ReadB(device.ep, ptr, USB_OUTPUT_SIZE, 0);
+	int count = 1;
+	while(ting && (count < 16)) {
+		ptr += USB_OUTPUT_SIZE*sizeof(unsigned char);
+		count += 1;
+		if(USBH_ReadB(device.ep, ptr, USB_OUTPUT_SIZE, 10) < 0) {
+			ting = false;
+		}
 	}
-	USB_output out;
-	for(int i = 0; i < USB_OUTPUT_SIZE; i++){
-		out.data[i] = readbuffer[i];
-	}
-	return out;
+	return readbuffer;
 }

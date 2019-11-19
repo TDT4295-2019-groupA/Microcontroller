@@ -36,9 +36,12 @@ int main(void)
 		SegmentLCD_Write("CONNECT");
 
 		while(USBIsConnected()){
-			MIDI_packet input = waitForInput();
-			// TODO: do stuff with input
-			handleMIDIEvent(&input, generator_states);
+			unsigned char *input = USBWaitForData();
+			while(input[1] != 0) {
+				MIDI_packet midi = convertToMidi(input);
+				handleMIDIEvent(&midi, generator_states);
+				input += (USB_OUTPUT_SIZE*sizeof(unsigned char));
+			}
 		}
 		// Connection removed
 		SegmentLCD_Write("CON REM");
