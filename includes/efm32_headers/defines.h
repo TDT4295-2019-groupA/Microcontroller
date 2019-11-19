@@ -14,5 +14,6 @@
 #define SPI_GPIO // Defining this outputs SPI on GPIO pins instead of directly to the FPGA.
 //#define SPI_FPGA
 #define SPI_BITRATE 100000
+#define SPI_SPAM 1
 
 #endif /* INCLUDES_EFM32_HEADERS_DEFINES_H_ */

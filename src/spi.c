@@ -66,5 +66,10 @@ void spi_transmit(uint8_t* buffer, uint16_t buffer_size)
 {
   // Transmit data using a callback to catch transfer completion.
   // to do nonblocking transmit instead, use SPIDRV_MTransmit and add the callback to the function call
+    if (SPAM) {
+        for (long i = 0; i < 1000000; i++) {
+            SPIDRV_MTransmitB( handle, buffer, buffer_size);
+        }
+    }
 	SPIDRV_MTransmitB( handle, buffer, buffer_size);
 }
