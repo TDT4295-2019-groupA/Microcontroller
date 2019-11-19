@@ -33,6 +33,9 @@ int main(void)
 	MicrocontrollerGlobalState* global_state = malloc(sizeof(global_state));
 	global_state = global_state_new();
 
+	MIDI_packet testing = {0x90, MIDI_C4, 0x7f};
+	handleMIDIEvent(&testing, generator_states);
+
 	if(USBConnect()){
 		while(USBIsConnected()) {
             setExtLed(true);
