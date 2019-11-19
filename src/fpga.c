@@ -133,12 +133,11 @@ void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_s
 
 void microcontroller_send_global_state_update(const MicrocontrollerGlobalState* global_state)
 {
-	byte data[2 + sizeof(MicrocontrollerGlobalState)]; // TODO remove the +1, its so we have room for a null byte
+	byte data[1 + sizeof(MicrocontrollerGlobalState)]; // TODO remove the +1, its so we have room for a null byte
 
 	data[0] = 1; // global_state update
-	data[1] = 1;
 
-	memcpy(data+2, global_state, sizeof(MicrocontrollerGlobalState));
+	memcpy(data+1, global_state, sizeof(MicrocontrollerGlobalState));
 
 	spi_transmit((byte*)data, sizeof(data));
 }
@@ -146,13 +145,12 @@ void microcontroller_send_global_state_update(const MicrocontrollerGlobalState* 
 void microcontroller_send_generator_update(ushort generator_index, bool reset_note_lifetime, const MicrocontrollerGeneratorState** generator_states)
 {
 	 // set reset_note_lifetime to true when sending note-on events
-	byte data[3 + sizeof(ushort) + sizeof(MicrocontrollerGeneratorState)]; // TODO remove the +1, its so we have room for a null byte
+	byte data[2 + sizeof(ushort) + sizeof(MicrocontrollerGeneratorState)]; // TODO remove the +1, its so we have room for a null byte
 
 	data[0] = 1; // here comes a package
-	data[1] = 2; // generator update
 
-	*(ushort*)(&data[2]) = generator_index;
-	data[4] = (byte) reset_note_lifetime;
+	*(ushort*)(&data[1]) = generator_index;
+	data[3] = (byte) reset_note_lifetime;
 
 	memcpy(data+3+sizeof(ushort), generator_states[generator_index], sizeof(MicrocontrollerGeneratorState));
 
