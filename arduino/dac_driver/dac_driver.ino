@@ -7,9 +7,9 @@
 
 #define DEBUG 0
 
-char buf[6];
-volatile byte pos;
-volatile boolean process_it;
+char buf[1024];
+volatile int pos;
+volatile int process_it;
 
 void setup (void)
 {
@@ -27,7 +27,7 @@ void setup (void)
     // get ready for an interrupt
     pos = 0;   // buffer empty
     memset(buf, 0, sizeof(buf));
-    process_it = false;
+    process_it = 0;
 
     // now turn on interrupts
     SPI.attachInterrupt();
@@ -40,21 +40,24 @@ ISR (SPI_STC_vect) {
     byte c = SPDR;
     if (pos < (sizeof(buf) - 1))
         buf[pos++] = c;
-    if (pos >= 2)
-        process_it = true;
+    if (pos >= (sizeof(buf) - 1))
+        process_it = pos;
 }  // end of interrupt routine SPI_STC_vect
 
 // main loop - wait for flag set in interrupt routine
 void loop(void) {
     if (process_it) {
-        for (uint16_t i = 0; i < 2; i++) {
-            Serial.print(buf[i]);
-        }
+      /*
+      for(int i = 0; i < process_it; i++) {
+        Serial.print(buf[i]);
+      }
+      */
+        Serial.write(buf, process_it);
         if (DEBUG)
             Serial.print('\n');
         pos = 0;
         memset(buf, 0, sizeof(buf));
-        process_it = false;
+        process_it = 0;
     }
 
 }  // end of loop
