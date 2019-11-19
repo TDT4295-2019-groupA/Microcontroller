@@ -51,9 +51,10 @@ int main(void)
 		while(USBIsConnected()){
 			setExtLed(true);
 			unsigned char *input = USBWaitForData();
+			MIDI_packet* midi;
 			while(input[1] != 0) {
-				MIDI_packet midi = convertToMidi(input);
-				handleMIDIEvent(&midi, generator_states);
+				midi = convertToMidi(input);
+				handleMIDIEvent(midi, generator_states);
 				input += (USB_OUTPUT_SIZE*sizeof(unsigned char));
 			}
 		}

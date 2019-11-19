@@ -23,7 +23,7 @@ int getInstrumentValue(){
 	return instrumentValue;
 }
 
-//MIDI control package, standar for bytte av instrument, 0-127 valg. alt på channel 1 (0) for øyeblikket
+//MIDI control package, standar for bytte av instrument, 0-127 valg. alt pï¿½ channel 1 (0) for ï¿½yeblikket
 static MIDI_cntrl_packet instruments[6] = {
 		{{0xc0, 0x0a}},
 		{{0xc0, 0x14}},
@@ -88,14 +88,6 @@ MIDI_packet waitForInput(){
 	return midi_out;
 }
 */
-
-MIDI_packet convertToMidi(unsigned char *usbpacket){
-	MIDI_packet midi_out;
-	midi_out.data[0] = usbpacket[1];
-	midi_out.data[1] = usbpacket[2];
-	midi_out.data[2] = usbpacket[3];
-	return midi_out;
-}
 
 void handleMultipleButtonPresses(MicrocontrollerGeneratorState** generator_states){
 	for(int i = 0; i < GPIO_BTN_COUNT; i++){

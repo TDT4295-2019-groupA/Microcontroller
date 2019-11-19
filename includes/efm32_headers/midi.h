@@ -48,5 +48,6 @@ typedef struct MIDI_cntrl_packet{
 
 MIDI_packet_info get_MIDI_packet_info(const byte* data);
 bool validate_MIDI_packet(const byte* data, size_t length);
+MIDI_packet *convertToMidi(unsigned char *usbpacket);
 
 #endif /* SRC_MIDI_H_ */

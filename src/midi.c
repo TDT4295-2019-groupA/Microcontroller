@@ -17,3 +17,11 @@ bool validate_MIDI_packet(const byte* data, size_t length)
 			return false;
 	return true;
 }
+
+MIDI_packet *convertToMidi(unsigned char *usbpacket){
+	MIDI_packet *midi_out = malloc(sizeof(MIDI_packet));
+	midi_out->data[0] = usbpacket[1];
+	midi_out->data[1] = usbpacket[2];
+	midi_out->data[2] = usbpacket[3];
+	return midi_out;
+}
