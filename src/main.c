@@ -3,13 +3,14 @@
 #include "em_device.h"
 #include "em_cmu.h"
 #include "input.h"
-#include "timer.h"
 #include "usbhost.h"
 #include "gpio.h"
 #include "fpga.h"
 #include "em_chip.h"
+#include "timer.h"
 //#include "interrupts.h"
 #include "spi.h"
+#include "midi.h"
 #include <stdbool.h>
 
 #ifndef DEVICE_SADIE
@@ -47,11 +48,15 @@ int main(void)
 		SegmentLCD_Write("CONNECT");
 #endif
 
-		while(USBIsConnected()) {
-            setExtLed(true);
-            MIDI_packet input = waitForInput();
-            handleMIDIEvent(&input, generator_states);
-        }
+		while(USBIsConnected()){
+			setExtLed(true);
+			unsigned char *input = USBWaitForData();
+			while(input[1] != 0) {
+				MIDI_packet midi = convertToMidi(input);
+				handleMIDIEvent(&midi, generator_states);
+				input += (USB_OUTPUT_SIZE*sizeof(unsigned char));
+			}
+		}
 		// Connection removed
 #ifndef DEVICE_SADIE
 		SegmentLCD_Write("CON REM");
@@ -71,18 +76,5 @@ void setupCMU(void)
 	CMU_ClockEnable(cmuClock_GPIO, true);
 	CMU_ClockEnable(cmuClock_WTIMER1, true);
 	CMU_ClockEnable(cmuClock_LDMA, true);
-	if (OUTPUT_CLOCK) {
-	    CMU->CTRL = CMU->CTRL | CMU_CTRL_CLKOUTSEL1_HFXOQ;  // Set CMU_CLK1 to use HFRCO
-	    CMU->HFPRESC = (CMU->HFPRESC & ~CMU_HFPRESC_PRESC_DEFAULT) | (0b11 << _CMU_HFPRESC_PRESC_SHIFT);
-        CMU->ROUTEPEN = CMU->ROUTEPEN | CMU_ROUTEPEN_CLKOUT1PEN;  // Enable CMU_CLK1 out pin
-        CMU->ROUTELOC0 = CMU->ROUTELOC0 | CMU_ROUTELOC0_CLKOUT1LOC_LOC2;  // Route CMU_CLK1 out of loc2 (PE12 on SADIE)
-    } else {
-#ifdef SPI_GPIO
-        CMU_ClockEnable(cmuClock_USART0, true);
-#endif
-#ifdef SPI_FPGA
-        CMU_ClockEnable(cmuClock_USART1, true);
-#endif
-    }
+	CMU_ClockEnable(cmuClock_USART0, true);
 }
-
