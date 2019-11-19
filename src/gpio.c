@@ -20,6 +20,10 @@ static unsigned int gpio_btn_index_to_port[] = {
 	gpioPortB,	//0
 	gpioPortB,	//1
 };
+static unsigned int gpio_btn_index_to_int[] = {
+	0,
+	1
+};
 #endif
 
 #ifdef DEVICE_SADIE

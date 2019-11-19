@@ -12,10 +12,6 @@
 #include "spi.h"
 #include <stdbool.h>
 
-#ifndef DEVICE_SADIE
-#include "segmentlcd.h"
-#endif
-
 void setupCMU(void);
 
 int main(void)
@@ -31,11 +27,6 @@ int main(void)
 
 	while(!setDone());
 
-	#ifndef DEVICE_SADIE
-	SegmentLCD_Init(false);
-	SegmentLCD_Write("USBHOST");
-	#endif
-
 	MicrocontrollerGeneratorState** generator_states = malloc(sizeof(MicrocontrollerGeneratorState*) * N_GENERATORS);
 	for (uint8_t i = 0; i < N_GENERATORS; i++)
 		generator_states[i] = generator_state_new();
@@ -43,25 +34,11 @@ int main(void)
 	global_state = global_state_new();
 
 	if(USBConnect()){
-#ifndef DEVICE_SADIE
-		SegmentLCD_Write("CONNECT");
-#endif
-
 		while(USBIsConnected()) {
             setExtLed(true);
             MIDI_packet input = waitForInput();
             handleMIDIEvent(&input, generator_states);
         }
-		// Connection removed
-#ifndef DEVICE_SADIE
-		SegmentLCD_Write("CON REM");
-#endif
-	}
-	else{
-		// Connection failed
-#ifndef DEVICE_SADIE
-		SegmentLCD_Write("CON FAIL");
-#endif
 	}
 }
 
@@ -69,13 +46,21 @@ void setupCMU(void)
 {
 	CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
 	CMU_ClockEnable(cmuClock_GPIO, true);
+#ifdef DEVICE_SADIE
 	CMU_ClockEnable(cmuClock_WTIMER1, true);
-	CMU_ClockEnable(cmuClock_LDMA, true);
+		CMU_ClockEnable(cmuClock_LDMA, true);
+#endif
+#ifdef DEVICE_GECKO_STARTER_KIT
+    CMU_ClockEnable(cmuClock_TIMER1, true);
+    	CMU_ClockEnable(cmuClock_DMA, true);
+#endif
 	if (OUTPUT_CLOCK) {
-	    CMU->CTRL = CMU->CTRL | CMU_CTRL_CLKOUTSEL1_HFXOQ;  // Set CMU_CLK1 to use HFRCO
+#ifdef DEVICE_SADIE
+        CMU->CTRL = CMU->CTRL | CMU_CTRL_CLKOUTSEL1_HFXOQ;  // Set CMU_CLK1 to use HFRCO
 	    CMU->HFPRESC = (CMU->HFPRESC & ~CMU_HFPRESC_PRESC_DEFAULT) | (0b11 << _CMU_HFPRESC_PRESC_SHIFT);
         CMU->ROUTEPEN = CMU->ROUTEPEN | CMU_ROUTEPEN_CLKOUT1PEN;  // Enable CMU_CLK1 out pin
         CMU->ROUTELOC0 = CMU->ROUTELOC0 | CMU_ROUTELOC0_CLKOUT1LOC_LOC2;  // Route CMU_CLK1 out of loc2 (PE12 on SADIE)
+#endif
     } else {
 #ifdef SPI_GPIO
         CMU_ClockEnable(cmuClock_USART0, true);
