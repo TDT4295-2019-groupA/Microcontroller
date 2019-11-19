@@ -26,7 +26,8 @@ typedef unsigned int    Time;     // measured in n samples, meaning x second is 
                              subject to change, chisel and microcontroller code \
                              should scale from this single variable alone */
 
-#define OVERRIDE_ON_FULL /* If this is defined the generator that has been on the longest \
+
+//#define OVERRIDE_ON_FULL /* If this is defined the generator that has been on the longest \
  	 	 	 	 	 	 	will be overridden when a new generator is needed */
 
 typedef struct Envelope { // either preset or controlled by knobs/buttons on the PCB
@@ -58,7 +59,7 @@ typedef struct MicrocontrollerGeneratorState {
 } __attribute__((packed)) MicrocontrollerGeneratorState;
 
 uint find_unused_generator_id(MicrocontrollerGeneratorState** generator_states);
-uint find_longest_active_generator_id();
+//1uint find_longest_active_generator_id();
 uint find_specific_generator_id(NoteIndex note_index, uint channel_index, MicrocontrollerGeneratorState** generator_states);
 byte is_valid_generator_id(uint idx);
 void update_generator_state(MicrocontrollerGeneratorState* generator_state, bool enabled, NoteIndex note_index, uint channel_index, Velocity velocity);

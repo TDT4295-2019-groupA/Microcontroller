@@ -13,20 +13,9 @@ uint find_unused_generator_id(MicrocontrollerGeneratorState** generator_states)
 	return idx;
 }
 
-static uint generator_activation = 0; // Total number of generator activations
-static uint generator_activation_count[N_GENERATORS] = {0}; // Total count last time a generator was activated
+//static uint generator_activation = 0; // Total number of generator activations
+//static uint generator_activation_count[N_GENERATORS] = {0}; // Total count last time a generator was activated
 
-uint find_longest_active_generator_id(){
-	uint id = 0;
-	uint lowest_count = (uint)-1;
-	for(uint i = 0; i < N_GENERATORS; i++){
-		if(generator_activation_count[i] < lowest_count){
-			lowest_count = generator_activation_count[i];
-			id = i;
-		}
-	}
-	return id;
-}
 
 int find_vacant_generator_channel(MicrocontrollerGeneratorState** generator_states) {
     // we need to assign notes to generators in a round-robin fashion to avoid
@@ -37,9 +26,12 @@ int find_vacant_generator_channel(MicrocontrollerGeneratorState** generator_stat
     while (generator_states[pos]->enabled) {
         pos++;
         if (pos >= N_GENERATORS) pos = 0;
-        if (pos == starting_pos) return -1;
+        if (pos == starting_pos) {
+        	return pos++;
+        }
 
     }
+
 
     starting_pos = (pos+1) % N_GENERATORS;
     return pos;
@@ -63,7 +55,6 @@ byte is_valid_generator_id(uint idx)
 
 void update_generator_state(MicrocontrollerGeneratorState* generator_state, bool enabled, NoteIndex note_index, uint channel_index, Velocity velocity)
 {
-	generator_activation++;
 	generator_state->enabled = enabled;
 	generator_state->note_index = note_index;
 	generator_state->channel_index = channel_index;
@@ -141,7 +132,6 @@ void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_s
 
 			update_generator_state(generator_states[idx], true, note, channel, velocity);
 			microcontroller_send_generator_update(idx, true, generator_states);
-			generator_activation_count[idx] = generator_activation;
 
 			// devkit: display note and generator index
 
