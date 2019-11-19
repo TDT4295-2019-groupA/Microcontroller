@@ -1,11 +1,9 @@
 #include "spi.h"
-#ifndef DEVICE_SADIE
-#include "segmentlcd.h"
-#endif
 
 SPIDRV_HandleData_t handleData;
 SPIDRV_Handle_t handle = &handleData;
 
+#ifdef DEVICE_SADIE
 #ifdef SPI_GPIO
 #undef SPIDRV_MASTER_USART0
 
@@ -45,16 +43,12 @@ SPIDRV_Handle_t handle = &handleData;
     spidrvSlaveStartImmediate   /* Slave start transfers immediately*/ \
   }
 #endif
+#endif
 
 void TransferComplete( SPIDRV_Handle_t handle,
                        Ecode_t transferStatus,
                        int itemsTransferred )
-{
-  if ( transferStatus == ECODE_EMDRV_SPIDRV_OK )
-  {
-	  //SegmentLCD_Write("SPI"); // yay success
-  }
-}
+{}
 
 void spi_init(void) {
 #ifdef SPI_GPIO
@@ -72,5 +66,10 @@ void spi_transmit(uint8_t* buffer, uint16_t buffer_size)
 {
   // Transmit data using a callback to catch transfer completion.
   // to do nonblocking transmit instead, use SPIDRV_MTransmit and add the callback to the function call
+    if (SPI_SPAM) {
+        for (long i = 0; i < 1000000; i++) {
+            SPIDRV_MTransmitB( handle, buffer, buffer_size);
+        }
+    }
 	SPIDRV_MTransmitB( handle, buffer, buffer_size);
 }

@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include "fpga.h"
-#ifndef DEVICE_SADIE
-#include "segmentlcd.h"
-#endif
 #include "spi.h"
 #include "input.h"
 
@@ -78,7 +75,6 @@ void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_s
 		sprintf(&converted[i*2], "%02X", m->data[i]);
 	}
 	converted[6] = '\n';
-	// SegmentLCD_Write(converted); // devkit: write the packet data as hex to the display
     // The UART interrupt handler should call this function when it has recieved a full midi event
     MIDI_packet_info packet_info = get_MIDI_packet_info(m->data);
 
@@ -101,28 +97,12 @@ void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_s
 
 			update_generator_state(generator_states[idx], false, note, channel, velocity);
 			microcontroller_send_generator_update(idx, false, generator_states);
-
-#ifndef DEVICE_SADIE
-			SegmentLCD_Number(0000);
-#endif
         }
         break; case 0b1001: { // note-on event
             //assert(length == 3);
             ChannelIndex   channel  = packet_info.type_specifier;
             NoteIndex      note     = m->data[1];
             Velocity       velocity = m->data[2];
-
-			// devkit: show velocity as radial indicator
-            for (int si = 0; si < 8; si++) {
-#ifndef DEVICE_SADIE
-            	SegmentLCD_ARing(si, 0); // turn off all segments
-#endif
-            }
-            for (int si = 0; si < 8; si++) {
-#ifndef DEVICE_SADIE
-            	SegmentLCD_ARing(si, velocity >= (0b1 << si) ? 1 : 0); // turn on up to value
-#endif
-            }
 
             if (channel == 9) return; // ignore drums
             if (velocity == 0) goto note_off_event; // people suck at following the midi standard
@@ -133,22 +113,11 @@ void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_s
 #ifdef OVERRIDE_ON_FULL
 				idx = find_longest_active_generator_id();
 #endif
-#ifndef DEVICE_SADIE
-				SegmentLCD_Write("OUTOFGN");
-            	return;
-#endif
             }
 
 			update_generator_state(generator_states[idx], true, note, channel, velocity);
 			microcontroller_send_generator_update(idx, true, generator_states);
 			generator_activation_count[idx] = generator_activation;
-
-			// devkit: display note and generator index
-
-#ifndef DEVICE_SADIE
-			SegmentLCD_LowerNumber(getInstrumentValue());
-			SegmentLCD_Number(note);
-#endif
         }
         break; case 0b1010:  // Polyphonic Key Pressure (Aftertouch) event
         break; case 0b1011:  // Control Change event
@@ -156,9 +125,6 @@ void handleMIDIEvent(MIDI_packet* m, MicrocontrollerGeneratorState** generator_s
         break; case 0b1101:  // Channel Pressure (After-touch) event
         break; case 0b1110: { // Pitch Bend Change event
         	Pitch pitch = m->data[2];
-#ifndef DEVICE_SADIE
-        	SegmentLCD_Number(pitch);
-#endif
         }
         break; case 0b1111:  // System Exclusive event
         break; default: break;         // unknown - ignored
